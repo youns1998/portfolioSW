@@ -12,6 +12,8 @@ Spring 백엔드와 GIS 공간 데이터 작업은 **기획·구현 전**입니�
 
 `docs/index.html`을 열거나, 정적 서버의 루트를 `docs/`로 지정합니다. 프레임워크·패키지 설치·빌드가 필요하지 않습니다.
 
+먼저 VS Code에서 이 폴더를 열고 `docs/index.html`을 Live Server의 Open with Live Server / Go Live로 확인합니다. 저장소 루트가 서버 루트여도 상대 경로를 사용하므로 `/docs/index.html`에서 정상 동작합니다. 현재 SW의 Pages는 활성화하지 않았으며 로컬 확인 후 공개합니다.
+
 ```powershell
 powershell -ExecutionPolicy Bypass -File scripts/validate.ps1
 powershell -ExecutionPolicy Bypass -File scripts/test-browser.ps1
