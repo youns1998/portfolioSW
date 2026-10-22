@@ -88,13 +88,14 @@
       const list = isCode ? repositories : drawings;
       const article = node("article", "project-card " + (isCode ? "project-card--code" : "project-card--drawing"));
       article.dataset.project = project.id;
-      if (isCode !== software) {
+      if (isCode !== software || (software && project.role === "supporting")) {
         article.classList.add("project-card--supporting");
         const copy = node("div", "project-card-copy");
         append(copy, node("p", "eyebrow", project.category), node("h4", "project-card-title", project.title), node("p", "project-card-description", project.description));
+        if (isCode && project.verification) copy.append(node("p", "project-verification", project.verification));
         const open = link("", project.readmeUrl || project.url, "project-open-link repository-link", true);
-        open.setAttribute("aria-label", project.title + (isCode ? " GitHub README 보기 (새 창)" : " 건축 포트폴리오에서 보기 (새 창)"));
-        append(open, node("span", "", isCode ? "GitHub README 보기" : "건축 포트폴리오에서 보기"), node("span", "project-open-arrow", "↗"));
+        open.setAttribute("aria-label", project.title + (isCode ? " GitHub README 보기 (새 창)" : " 작업 자료 보기 (새 창)"));
+        append(open, node("span", "", isCode ? "GitHub README 보기" : "작업 자료 보기"), node("span", "project-open-arrow", "↗"));
         append(article, copy, open);
         list.append(article);
         return;
@@ -174,15 +175,25 @@
         copy.insertBefore(index, actions);
       }
     });
-    document.getElementById("drawing-project-count").textContent = String(drawings.childElementCount).padStart(2, "0") + " PROJECTS";
+    document.getElementById("drawing-project-count").textContent = String(drawings.childElementCount).padStart(2, "0") + (software ? " VISUAL WORKS" : " PROJECTS");
     document.getElementById("github-project-count").textContent = String(repositories.childElementCount).padStart(2, "0") + " REPOSITORIES";
-    const planned = document.getElementById("planned-project-list");
-    if (planned) (window.portfolioPlannedProjects || []).forEach((project) => {
-      const article = node("article", "planned-project");
-      article.dataset.planned = project.id;
-      append(article, node("p", "eyebrow", "PLANNED / " + project.area), node("h4", "", project.title), node("p", "", project.description), node("span", "planned-status", "기획 전 · 결과물 준비 중"));
-      planned.append(article);
-    });
+    const featured = document.getElementById("featured-project-list");
+    if (featured) {
+      featured.replaceChildren();
+      (window.portfolioPlannedProjects || []).forEach((project, index) => {
+        const article = node("article", "featured-project");
+        article.dataset.featured = project.id;
+        const tools = node("ul", "project-tools");
+        tools.setAttribute("aria-label", "계획한 기술과 작업 범위");
+        (project.tools || []).forEach((tool) => tools.append(node("li", "", tool)));
+        append(article, node("p", "eyebrow", String(index + 1).padStart(2, "0") + " / " + project.area), node("h4", "", project.title), node("p", "featured-description", project.description), tools, node("p", "featured-scope", project.scope));
+        const footer = node("div", "featured-footer");
+        footer.append(node("span", "featured-status", "준비 중 · 구현 결과 추후 공개"));
+        if (project.repositoryUrl) footer.append(link("GitHub 저장소 보기 ↗", project.repositoryUrl, "featured-repository", true));
+        article.append(footer);
+        featured.append(article);
+      });
+    }
   }
 
   function renderDetail() {
@@ -322,7 +333,7 @@
       append(development, node("p", "eyebrow", "PROJECT DETAILS"), node("h2", "", project.kind === "architecture" ? "건축 포트폴리오에서 이어 보기" : "주요 개발 내용"));
       const points = node("ul");
       (project.highlights || []).forEach((highlight) => points.append(node("li", "", highlight)));
-      if (project.kind === "architecture") development.append(node("p", "detail-lead", "설계 도면과 시각화 자료는 건축 포트폴리오에서 소개합니다. 위 링크에서 전체 자료를 확인할 수 있습니다."));
+      if (project.kind === "architecture") development.append(node("p", "detail-lead", "AutoCAD 도면 작성과 SketchUp 시각화 경험을 보여주는 보조 자료입니다. 전체 도면과 렌더링 자료는 위 링크에서 확인할 수 있습니다."));
       append(development, points);
       root.append(development);
     }

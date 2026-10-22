@@ -4,13 +4,13 @@
 
 | 항목 | portfolioCAD | portfolioSW |
 | --- | --- | --- |
-| 주력 약 80% | 건축·인테리어·도면·시각화 | 소프트웨어·도구·자동화 |
-| 보조 약 20% | 설계를 돕는 개발 도구 | 건축 작업에서 얻은 문제 이해 |
-| 주요 결과물 | 만화카페, 단독주택, PDF 5개·89쪽 | C#·WPF·Python 도구 3개 |
-| 다음 작업 자리 | 추가하지 않음 | Spring 백엔드, GIS 공간 데이터 |
+| 주력 약 80% | 건축·인테리어·도면·시각화 | Spring CRUD → GIS(QGIS·PostgreSQL·PostGIS), 준비 중 |
+| 보조 약 20% | 설계를 돕는 개발 도구 | 기존 개발 도구와 AutoCAD·SketchUp 시각 작업 경험 |
+| 기존 결과물 | 만화카페, 단독주택, PDF 5개·89쪽 | C#·WPF·Python 도구 3개, 보조 목록 |
+| 준비 중인 주력 작업 | 추가하지 않음 | Spring CRUD 저장소 1개, GIS 저장소 1개 |
 | 상세 자료의 원본 | 건축 PDF와 설계 이미지 | 개발 프로젝트 설명과 원본 저장소 링크 |
 
-CAD의 개발 도구는 작은 목록으로 표시하고 GitHub README에 연결합니다. SW의 건축 작업은 작은 목록으로 표시하고 CAD의 설계 상세에 연결합니다. 두 사이트의 주요 작업은 준비 중인 작업과 분리합니다. SW 저장소에 건축 PDF를 복제하지 않습니다.
+CAD의 개발 도구는 작은 목록으로 표시하고 GitHub README에 연결합니다. SW의 보조 작업은 AutoCAD 도면 작성·SketchUp 모델링과 렌더링 경험을 중심으로 설명하고 CAD의 상세 자료에 연결합니다. SW에서 건축 포트폴리오는 전체 자료를 확인하는 보조 링크로만 안내합니다. 두 사이트의 주요 작업은 준비 중인 작업과 분리합니다. SW 저장소에 건축 PDF를 복제하지 않습니다.
 
 ## 독립적인 유지 관리
 
@@ -22,10 +22,10 @@ CAD의 개발 도구는 작은 목록으로 표시하고 GitHub README에 연결
 - `docs/projects/detail.html`: 동일한 상세 화면 구조. 건축 PDF는 CAD에서 관리합니다.
 - `scripts/validate.ps1`, `scripts/test-browser.ps1`: 각 폴더에서 파일 및 브라우저 검증을 실행합니다.
 
-Spring·GIS 작업은 SW의 `window.portfolioPlannedProjects`에만 있습니다. 구현 전에는 사용 기술 실적·완성 프로젝트 수·GitHub 결과물 링크에 포함하지 않습니다. 실제 결과물이 생기면 `portfolioProjects`에 설명·사용 기술·검증 결과·실제 URL을 등록하고 해당 예정 카드를 제거합니다.
+Spring CRUD·GIS 작업은 SW의 `window.portfolioPlannedProjects`에서 관리하며 첫 번째 주력 영역에 표시합니다. 카드에는 준비 상태와 계획한 기술·범위를 함께 표시하고, 구현 전에는 완성 실적으로 소개하지 않습니다. 저장소가 만들어지면 `repositoryUrl`에 실제 주소를 넣습니다. 기존 도구 3개는 `portfolioProjects`에서 `role: "supporting"`으로 관리하며 작은 보조 목록에 표시합니다. 실제 구현 결과가 생기면 주력 카드의 상태·설명·검증 범위를 갱신하고 첫 번째 영역의 노출 순서를 유지합니다.
 
 샘플 데이터 검사, API 빌드와 실제 CAD/Revit 내부 실행은 구분합니다. 기존 `verification`에 기록된 범위를 넘어 실행했다고 표현하지 않습니다.
 
 배포 버전 쿼리 `?v=`는 CSS·데이터·JS 변경 시 두 HTML에서 함께 갱신합니다. 배포는 각 저장소의 `main` 브랜치 `/docs` 설정을 사용합니다.
 
-SW는 먼저 Go Live로 확인한 뒤 Pages를 설정합니다. 공개 전 CAD의 교차 링크는 SW 저장소를 가리킵니다. SW 공개 배포가 확인되면 CAD의 링크를 `https://youns1998.github.io/portfolioSW/`, 문구를 `소프트웨어 포트폴리오 보기`로 갱신합니다.
+SW는 `https://youns1998.github.io/portfolioSW/`에 공개되었습니다. 수정은 Go Live로 확인한 뒤 `main`에 푸시하여 Pages에 반영합니다. CAD에서 SW를 안내할 때는 이 공개 주소와 `소프트웨어 포트폴리오 보기` 문구를 사용합니다.

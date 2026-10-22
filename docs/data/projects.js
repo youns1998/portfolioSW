@@ -2,20 +2,20 @@
 window.portfolioProjects = [
   {
     id: "comic-cafe", kind: "architecture",
-    title: "만화카페 인테리어 계획", category: "Architecture / Interior",
-    type: "인테리어 계획", description: "공간 구성·동선 계획을 도면과 렌더링으로 표현한 작업입니다. 설계 과정은 건축 포트폴리오에서 소개합니다.",
+    title: "SketchUp 모델링·렌더링 · 만화카페", category: "Visual Work / SketchUp · AutoCAD",
+    type: "3D 모델링·렌더링·도면 작성", description: "SketchUp으로 공간을 모델링하고 렌더링 이미지로 표현했습니다. AutoCAD 도면과 함께 2D·3D 시각 자료를 만든 작업입니다.",
     url: "https://youns1998.github.io/portfolioCAD/projects/detail.html?project=comic-cafe",
     documents: []
   },
   {
     id: "two-story-house", kind: "architecture",
-    title: "2층 단독주택 설계 도면", category: "Architecture / CAD",
-    type: "건축 도면집", description: "배치·평면·입면·단면과 주요 상세를 정리한 도면 작업입니다. 공간과 도면에 대한 이해를 개발의 배경으로 쌓고 있습니다.",
+    title: "AutoCAD 2D 도면 작성 · 단독주택", category: "Visual Work / AutoCAD",
+    type: "2D 도면 작성·편집", description: "AutoCAD로 평면·입면·단면과 상세 도면을 작성했습니다. 여러 뷰의 정보를 도면으로 표현하고 정리한 경험입니다.",
     url: "https://youns1998.github.io/portfolioCAD/projects/detail.html?project=two-story-house",
     documents: []
   },
   {
-    id: "cad-productivity-palette",
+    id: "cad-productivity-palette", role: "supporting",
     thumbnail: "images/projects/cad-productivity.svg",
     thumbnailAlt: "CAD 도면 선과 명령 팔레트를 표현한 그래픽",
     readmeUrl: "https://github.com/youns1998/cad-productivity-palette/blob/main/README.md",
@@ -42,7 +42,7 @@ window.portfolioProjects = [
     documents: []
   },
   {
-    id: "revit-bim-inspector",
+    id: "revit-bim-inspector", role: "supporting",
     thumbnail: "images/projects/bim-inspector.svg",
     thumbnailAlt: "입체 모델의 층과 점검 지점을 표현한 BIM 그래픽",
     readmeUrl: "https://github.com/youns1998/revit-bim-portfolio/blob/main/README.md",
@@ -69,7 +69,7 @@ window.portfolioProjects = [
     documents: []
   },
   {
-    id: "drawing-file-organizer",
+    id: "drawing-file-organizer", role: "supporting",
     thumbnail: "images/projects/drawing-organizer.svg",
     thumbnailAlt: "도면 파일이 폴더와 보고서로 정리되는 흐름을 표현한 그래픽",
     readmeUrl: "https://github.com/youns1998/drawing-file-organizer/blob/main/README.md",
@@ -97,10 +97,16 @@ window.portfolioProjects = [
   }
 ];
 
-// Reserved directions, deliberately separate from implemented projects.
+// Primary projects in preparation; kept separate from implemented work.
 window.portfolioPlannedProjects = [
-  { id: "spring-backend", area: "SPRING / BACKEND", title: "Spring 기반 웹 서비스",
-    description: "범용 백엔드 프로젝트를 위한 자리입니다. 주제와 구현 범위는 추후 정하고, 실제 구현·검증 이후 결과물을 공개합니다." },
-  { id: "gis-spatial", area: "GIS / SPATIAL DATA", title: "GIS 공간 데이터 프로젝트",
-    description: "건축과 소프트웨어를 연결할 공간 데이터 프로젝트를 위한 자리입니다. 사용할 데이터와 기능은 아직 정하지 않았습니다." }
+  { id: "spring-backend", area: "SPRING / WEB SERVICE", title: "Spring CRUD",
+    description: "Spring 기반 웹 서비스의 데이터 생성·조회·수정·삭제를 구현할 프로젝트입니다. CRUD 흐름과 데이터 처리를 중심으로 준비합니다.",
+    tools: ["Spring", "CRUD"],
+    scope: "구현 목표 · 데이터 생성 / 조회 / 수정 / 삭제",
+    repositoryUrl: "https://github.com/youns1998/portfolioSPR" },
+  { id: "gis-spatial", area: "GIS / SPATIAL DATABASE", title: "GIS 공간 데이터",
+    description: "QGIS 도구 활용과 PostgreSQL·PostGIS 데이터베이스 작업을 하나의 저장소에 정리할 프로젝트입니다. 공간 데이터의 저장·조회와 지도 시각화를 중심으로 준비합니다.",
+    tools: ["QGIS", "PostgreSQL", "PostGIS"],
+    scope: "작업 목표 · 공간 데이터 저장 / 조회 / 지도 시각화",
+    repositoryUrl: "https://github.com/youns1998/portfolioGIS" }
 ];
