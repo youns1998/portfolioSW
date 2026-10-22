@@ -1,0 +1,24 @@
+# Secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# IDE
+.vscode/
+.idea/
+.project
+.settings/
+
+# Local preview / one-off test artifacts
+.codex-preview/
+docs/.codex-*.html
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs / temp
+*.log
+*.tmp
