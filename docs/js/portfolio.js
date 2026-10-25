@@ -6,8 +6,6 @@
     ? window.portfolioFeaturedProjects
     : (Array.isArray(window.portfolioPlannedProjects) ? window.portfolioPlannedProjects : []);
   const statuses = window.portfolioStatuses || {};
-  const supportProjects = Array.isArray(window.portfolioSupportProjects) ? window.portfolioSupportProjects : [];
-  const presentations = window.portfolioPresentations || {};
   const projectLinksEnabled = window.portfolioSettings?.projectLinks !== false;
   const statusKey = (project) => statuses[project.status] ? project.status : (featuredProjects.includes(project) ? "planned" : "");
   const statusInfo = (project) => statuses[statusKey(project)];
@@ -167,55 +165,32 @@
   function renderHome() {
     if (document.body.dataset.layout !== "support") return renderDirectoryHome();
     const list = document.getElementById("software-project-list");
+    const visualList = document.getElementById("visual-project-list");
     if (!list) return;
     list.replaceChildren();
-    const cases = [...projects.filter((project) => project.caseStudy && project.showOnHome !== false), ...supportProjects.filter((project) => project.showOnHome !== false)];
-    cases.forEach((project) => {
-      const presentation = presentations[project.id] || {};
+    visualList?.replaceChildren();
+    const renderEntry = (project, target, external = false) => {
+      if (!target) return;
       const article = node("article", "project-entry");
       article.dataset.project = project.id;
-      const anchor = link("", detailUrl(project), "project-entry-link");
+      const anchor = link("", external ? project.url : detailUrl(project), "project-entry-link", external);
       const copy = node("div", "project-entry-copy");
-      const title = node("h2", "", project.title);
+      const title = node(external ? "h3" : "h2", "project-entry-title", project.title);
       title.id = "project-title-" + project.id;
       anchor.setAttribute("aria-labelledby", title.id);
-      append(copy, title, node("p", "", presentation.summary || project.caseStudy.label));
-      const meta = node("div", "project-entry-meta");
-      append(meta, node("span", "project-entry-tools", presentation.technologies || texts(project.tools).join(" · ")), node("span", "project-entry-arrow", "↗"));
-      meta.lastElementChild.setAttribute("aria-hidden", "true");
-      append(anchor, copy, meta);
+      append(copy, title, node("p", "", project.description));
+      if (texts(project.tools).length) copy.append(node("p", "project-entry-tools", texts(project.tools).join(" · ")));
+      const arrow = node("span", "project-entry-arrow", external ? "↗" : "→");
+      arrow.setAttribute("aria-hidden", "true");
+      append(anchor, copy, arrow);
       article.append(anchor);
-      list.append(article);
-    });
-  }
-
-  function renderCaseDetail(root, project) {
-    const presentation = presentations[project.id] || {};
-    root.classList.add("case-detail");
-    root.replaceChildren(link("← 프로젝트 목록", "../index.html#work", "back-link"));
-    const heading = node("header", "case-heading");
-    append(heading, node("p", "detail-category", presentation.badge || "개인 프로젝트"), node("h1", "", project.title), node("p", "detail-lead", project.description));
-    appendTools(heading, project);
-    root.append(heading);
-    const overview = node("section", "case-overview");
-    append(overview, node("h2", "", "개요"), node("p", "", presentation.problem || project.caseStudy.problem), node("p", "", presentation.approach || project.caseStudy.approach));
-    root.append(overview);
-    const features = node("section", "case-features");
-    features.append(node("h2", "", "주요 기능"));
-    const list = node("ul", "case-feature-list");
-    (presentation.features || []).forEach((feature) => {
-      const item = node("li");
-      append(item, node("strong", "", feature.title), node("p", "", feature.body));
-      list.append(item);
-    });
-    features.append(list);
-    if (list.childElementCount) root.append(features);
-    appendProjectContent(root, project, true);
-    if (!isPlanned(project) && texts(project.verification).length) {
-      const verification = node("section", "case-verification");
-      append(verification, node("h2", "", "확인 범위"), node("p", "", texts(project.verification).join(" ")));
-      root.append(verification);
-    }
+      target.append(article);
+    };
+    [...featuredProjects, ...projects.filter(isSoftwareProject)]
+      .filter((project) => project.showOnHome !== false)
+      .forEach((project) => renderEntry(project, list));
+    projects.filter((project) => project.kind === "architecture")
+      .forEach((project) => renderEntry(project, visualList, true));
   }
 
   function renderDirectoryHome() {
@@ -392,13 +367,12 @@
     const root = document.getElementById("project-detail");
     if (!root) return;
     const params = new URLSearchParams(location.search);
-    const project = [...supportProjects, ...featuredProjects, ...projects].find((entry) => entry.id === params.get("project"));
+    const project = [...featuredProjects, ...projects].find((entry) => entry.id === params.get("project"));
     if (!project) {
       root.replaceChildren(node("h1", "", "프로젝트를 찾을 수 없습니다."), link("프로젝트 목록으로", "../index.html#work", "button button-dark"));
       return;
     }
     document.title = project.title + " | 최윤성 포트폴리오";
-    if (project.caseStudy) return renderCaseDetail(root, project);
     if (featuredProjects.includes(project)) {
       const intro = node("section", "detail-intro featured-detail-intro");
       const heading = node("div", "detail-heading");
