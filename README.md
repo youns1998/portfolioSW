@@ -37,7 +37,7 @@ Java 21, Python 3.11+, .NET 10 SDK가 필요합니다. CAD 빌드·엔진 검사
 - `docs/data/projects.js`: 세 프로젝트 설명·저장소 링크
 - `docs/js/portfolio.js`, `docs/css/portfolio.css`: 표시·스타일
 
-페이지는 간단한 3개 항목을 유지하며 각 항목은 GitHub로 직접 연결합니다. 자기소개와 이력서 내용은 넣지 않습니다. GitHub Pages 배포 경로는 `main /docs`입니다.
+페이지는 GitHub 스타일의 3개 프로젝트 목록이며 각 항목은 저장소로 직접 연결합니다. 자기소개와 이력서 내용은 넣지 않습니다. GitHub Pages 배포 경로는 `main /docs`입니다. [화면 디자인 기준](docs/design.md)
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File scripts/validate.ps1

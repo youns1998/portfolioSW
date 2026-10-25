@@ -1,27 +1,54 @@
 <!doctype html>
 <html lang="ko">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Spring CRUD, GIS 공간 데이터, CAD Productivity Palette 세 프로젝트를 소개하고 GitHub 저장소로 연결하는 포트폴리오입니다.">
-  <link rel="icon" href="data:,">
-  <link rel="stylesheet" href="css/portfolio.css?v=20261026-1">
-  <title>최윤성 | Software Portfolio</title>
-</head>
-<body data-page="home" data-focus="software" data-layout="support">
-  <a class="skip-link" href="#work">프로젝트로 바로 가기</a>
-  <header class="site-header page-width">
-    <a class="wordmark" href="#top">최윤성</a>
-    <nav aria-label="주 메뉴"><a href="#work">프로젝트</a></nav>
-  </header>
-  <main id="top" class="page-width">
-    <section id="work" class="work-section" aria-labelledby="work-title">
-      <h1 id="work-title" class="work-title">프로젝트</h1>
-      <div id="software-project-list" class="project-list"></div>
-    </section>
-  </main>
-  <footer class="site-footer page-width"><span>© <span id="year"></span> 최윤성</span><a href="#top">맨 위로 ↑</a></footer>
-  <script src="data/projects.js?v=20261026-1"></script>
-  <script src="js/portfolio.js?v=20261026-1"></script>
-</body>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="사업·업무 관리, 시설 점검 GIS, CAD Productivity Palette 세 프로젝트를 소개하고 GitHub 저장소로 연결하는 포트폴리오입니다."
+    />
+    <link rel="icon" href="data:," />
+    <link rel="stylesheet" href="css/portfolio.css?v=20261026-2" />
+    <title>최윤성 | Software Portfolio</title>
+  </head>
+  <body data-page="home" data-focus="software" data-layout="support">
+    <a class="skip-link" href="#work">프로젝트로 바로 가기</a>
+    <header class="site-header">
+      <div class="site-header-inner page-width">
+        <a class="wordmark" href="#top"
+          ><span class="brand-symbol" aria-hidden="true"
+            ><svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.7"
+            >
+              <path d="m8 7-5 5 5 5m8-10 5 5-5 5m-3-12-2 14" /></svg></span
+          ><span
+            >최윤성<span class="wordmark-divider"> / </span
+            ><span class="site-context">Software Portfolio</span></span
+          ></a
+        >
+      </div>
+      <nav class="site-tabs page-width" aria-label="주 메뉴">
+        <a href="#work" aria-current="page"
+          >프로젝트 <span class="nav-count">3</span></a
+        >
+      </nav>
+    </header>
+    <main id="top" class="page-width">
+      <section id="work" class="work-section" aria-labelledby="work-title">
+        <div class="work-heading">
+          <h1 id="work-title" class="work-title">프로젝트</h1>
+          <span class="list-count">3 repositories</span>
+        </div>
+        <div id="software-project-list" class="project-list"></div>
+      </section>
+    </main>
+    <footer class="site-footer page-width">
+      <span>© <span id="year"></span> 최윤성</span><a href="#top">맨 위로 ↑</a>
+    </footer>
+    <script src="data/projects.js?v=20261026-2"></script>
+    <script src="js/portfolio.js?v=20261026-2"></script>
+  </body>
 </html>
