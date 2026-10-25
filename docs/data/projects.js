@@ -190,6 +190,8 @@ Object.assign(window.portfolioProjects.find((project) => project.id === "cad-pro
 // separately; sample visuals do not represent verified application screenshots.
 window.portfolioPresentations = {
   "cad-productivity-palette": {
+    summary: "AutoCAD 명령·객체 편집·도면 점검을 모은 작업 도구",
+    technologies: "C# · WPF",
     filter: "automation", badge: "업무 자동화", role: "개인 개발 · C# / WPF",
     approach: "C#과 WPF로 AutoCAD 도킹 팔레트를 제작했습니다. 선택 객체 편집, 자주 쓰는 명령, 도면 점검을 한곳에 모아 작업 흐름 안에서 사용할 수 있도록 구성했습니다.",
     focus: "반복해서 사용하는 명령을 가까이 두고, 객체 확인과 편집을 같은 공간에서 이어가는 데 집중했습니다. 직접 제작한 도구를 실제 CAD 작업에 활용한 경험입니다.",
@@ -201,6 +203,8 @@ window.portfolioPresentations = {
     workflow: ["객체 선택", "속성 확인·편집", "명령 실행", "도면 점검"]
   },
   "it-support-desk": {
+    summary: "장비 정보와 사용자 문의·처리 이력을 연결하는 관리 도구",
+    technologies: "Java · Spring Boot",
     filter: "support", badge: "자산·문의 관리", role: "개인 개발 · 기획·설계·구현",
     problem: "자산 정보와 문의 내역이 흩어져 있으면 장비 상태와 반복되는 문제를 파악하기 어렵습니다. 장비와 처리 이력을 함께 살펴보는 전산 관리 흐름을 주제로 삼았습니다.",
     approach: "자산 번호를 중심으로 장비 정보와 사용자 문의를 연결했습니다. 문의는 접수·확인 중·처리 완료 단계로 나누고, 상태 변경과 처리 메모를 이력으로 남기도록 구현했습니다.",
@@ -213,6 +217,8 @@ window.portfolioPresentations = {
     workflow: ["자산 등록", "문의 접수", "원인 확인·조치", "처리 이력 관리"]
   },
   "pc-troubleshooting-lab": {
+    summary: "PC 장애 대응 기록과 시스템 정보 수집 자동화",
+    technologies: "PowerShell",
     filter: "support", badge: "PC·사용자 지원", role: "개인 프로젝트 · 장애 분석·대응 기록·점검 자동화",
     problem: "같은 오류를 다시 만났을 때 이전 확인 과정을 기억에만 의존하기 쉽습니다. 증상과 원인을 구분하고, 점검 순서와 판단 근거를 다시 활용할 수 있는 문서가 필요하다고 생각했습니다.",
     approach: "증상, 사용 환경, 확인 순서, 조치, 결과, 재발 방지를 공통 서식으로 정리했습니다. PowerShell로 점검 정보를 수집하고, 확인 명령과 판단 근거를 대응 기록에 연결했습니다.",

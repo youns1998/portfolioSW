@@ -1,51 +1,41 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="ko">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="전산·OA 지원자 최윤성의 포트폴리오. C# 업무 자동화 경험과 IT 자산 관리, PC 장애 대응 프로젝트 설계를 소개합니다.">
+  <meta name="description" content="최윤성의 전산·OA·소프트웨어 포트폴리오. 업무 자동화, IT 자산 관리, PC 사용자 지원 프로젝트를 소개합니다.">
   <link rel="icon" href="data:,">
-  <link rel="stylesheet" href="css/portfolio.css?v=20261025-3">
+  <link rel="stylesheet" href="css/portfolio.css?v=20261025-4">
   <title>최윤성 | IT Support & Software Portfolio</title>
 </head>
 <body data-page="home" data-focus="software" data-layout="support">
   <a class="skip-link" href="#work">프로젝트로 바로 가기</a>
-  <header class="site-header">
-    <a class="wordmark" href="#top" aria-label="최윤성 포트폴리오 처음으로">YS<span class="wordmark-dot">.</span><span class="wordmark-caption">최윤성 · Portfolio</span></a>
-    <nav aria-label="주 메뉴"><a href="#top">소개</a><a href="#work">프로젝트</a><a href="#about">경험·역량</a><a href="#contact">연락처</a></nav>
+  <header class="site-header page-width">
+    <a class="wordmark" href="#top">최윤성</a>
+    <nav aria-label="주 메뉴"><a href="#work">프로젝트</a><a href="#about">소개</a><a href="#contact">연락처</a></nav>
   </header>
-  <main id="top">
-    <section class="hero page-width support-hero" aria-labelledby="hero-title">
-      <div class="hero-copy">
-        <p class="hero-role"><span class="availability-dot" aria-hidden="true"></span> 전산 · OA · IT 사용자 지원</p>
-        <h1 id="hero-title">문제를 차근차근 풀고,<br>일상의 업무를 더 편리하게.</h1>
-        <p class="hero-description">안녕하세요, 소프트웨어를 전공한 <strong>최윤성</strong>입니다.<br>직접 도구를 만들고 오류의 원인을 찾아보며 배워왔습니다.<br>이 경험을 바탕으로, 구성원의 업무를 돕는 전산 담당자로 성장하고 싶습니다.</p>
-        <div class="hero-actions"><a class="solid-button" href="#work">프로젝트 살펴보기 <span aria-hidden="true">↗</span></a><a class="text-button" href="https://github.com/youns1998" target="_blank" rel="noopener noreferrer">GitHub ↗</a></div>
-      </div>
-      <aside class="profile-panel" aria-label="지원자 소개">
-        <div class="profile-top"><img class="hero-portrait" src="images/최윤성.jpg" alt="최윤성 프로필 사진" width="120" height="160"><span class="profile-monogram" aria-hidden="true">CHOI<br>YUN<br>SEONG<span>IT & SOFTWARE</span></span></div>
-        <p class="profile-name">최윤성 <span>신입</span></p>
-        <ul class="hero-credentials"><li>충북대학교 소프트웨어학과 졸업</li><li>정보처리기사</li></ul>
-        <p class="profile-caption">직접 익히고, 확인하고, 개선합니다.</p>
-      </aside>
+  <main id="top" class="page-width">
+    <section class="intro" aria-labelledby="hero-title">
+      <p class="intro-role">전산·OA · 소프트웨어</p>
+      <h1 id="hero-title">최윤성</h1>
+      <p class="intro-description">소프트웨어를 전공하고,<br>반복 업무를 줄이는 도구를 만듭니다.</p>
     </section>
-    <div class="focus-strip page-width" aria-label="관심 업무"><span>관심 업무</span><p>PC·소프트웨어 관리</p><span aria-hidden="true">/</span><p>사용자 지원</p><span aria-hidden="true">/</span><p>반복 업무 자동화</p></div>
-    <section id="work" class="work-section page-width" aria-labelledby="work-title">
-      <div class="section-heading section-heading--wide"><div><p class="section-kicker">SELECTED PROJECTS</p><h2 id="work-title">업무를 이해하고, 도구로 연결합니다.</h2></div><p class="section-description">반복 작업을 줄이는 도구부터<br>전산 관리와 사용자 지원까지.</p></div>
-      <div class="project-filters" role="group" aria-label="프로젝트 분야 필터"><button type="button" class="filter-button" data-filter="all" aria-pressed="true">전체</button><button type="button" class="filter-button" data-filter="automation" aria-pressed="false">업무 자동화</button><button type="button" class="filter-button" data-filter="support" aria-pressed="false">전산·OA</button><span id="project-filter-count" role="status"></span></div>
-      <div id="software-project-list" class="case-list"></div>
-      <section class="architecture-reference" aria-labelledby="visual-work-title"><a href="https://youns1998.github.io/portfolioCAD/" target="_blank" rel="noopener noreferrer"><img src="images/visual-work.png" alt="SketchUp으로 모델링한 만화카페 3D 렌더링" width="960" height="540" loading="lazy"><div class="architecture-reference-copy"><p>함께 해온 작업</p><h3 id="visual-work-title">도면·3D 시각화</h3><p>AutoCAD · SketchUp</p><span>건축 포트폴리오 보기 ↗</span></div></a></section>
+    <section id="work" class="work-section" aria-labelledby="work-title">
+      <h2 id="work-title">프로젝트</h2>
+      <div id="software-project-list" class="project-list"></div>
+      <p class="other-work"><a href="https://youns1998.github.io/portfolioCAD/" target="_blank" rel="noopener noreferrer">도면·3D 시각화 작업 <span aria-hidden="true">↗</span></a></p>
     </section>
-    <section id="about" class="about-section page-width" aria-labelledby="about-title">
-      <div class="section-heading"><p class="section-kicker">BACKGROUND & APPROACH</p><h2 id="about-title">배운 것을 실제 문제에 연결합니다.</h2></div>
-      <div class="about-grid"><div><h3 class="small-heading">이렇게 일하고 싶습니다</h3><ol class="approach-list"><li><span>01</span><div><h4>먼저, 문제를 확인합니다.</h4><p>증상과 설정을 하나씩 살펴보고, 원인을 좁혀 해결 방법을 찾습니다.</p></div></li><li><span>02</span><div><h4>직접 적용하고 확인합니다.</h4><p>프로그램을 만들고 수정하며 실제 사용 결과를 확인하는 방식으로 배웁니다.</p></div></li><li><span>03</span><div><h4>더 편리한 방법을 고민합니다.</h4><p>자주 쓰는 기능을 모은 CAD 도구처럼 반복 작업을 줄일 방법을 찾습니다.</p></div></li></ol></div>
-      <div class="background"><h3 class="small-heading">학력 · 경험 · 자격</h3><dl class="background-list"><div><dt>2016.03 — 2022.08</dt><dd><strong>충북대학교 소프트웨어학과</strong><span>4년제 학사 졸업</span></dd></div><div><dt>2020.08 — 2020.09</dt><dd><strong>플러그미디어웍스</strong><span>어플리케이션 개발 관련 학생 인턴</span></dd></div><div><dt>국가기술자격</dt><dd><strong>정보처리기사</strong><span>운영체제·데이터베이스·네트워크 기초 학습</span></dd></div></dl></div></div>
-      <div class="skills-overview"><h3 class="small-heading">기술과 학습 범위</h3><div class="skill-columns"><div><h4>직접 개발에 활용</h4><p>C# · WPF · AutoCAD .NET API</p><span>CAD 작업 보조 도구 제작</span></div><div><h4>전공·개인 학습</h4><p>Spring Boot · C++ · Python</p><span>소프트웨어 개발과 문제 해결 기초</span></div><div><h4>관심을 갖고 익히는 분야</h4><p>PC 하드웨어 · 운영체제 · 소프트웨어 설정</p><span>사내 전산 환경과 사용자 지원으로 확장</span></div></div></div>
+    <section id="about" class="about-section" aria-labelledby="about-title">
+      <h2 id="about-title">소개</h2>
+      <dl class="profile-facts"><div><dt>학력</dt><dd>충북대학교 소프트웨어학과 졸업</dd></div><div><dt>자격</dt><dd>정보처리기사</dd></div><div><dt>경험</dt><dd>플러그미디어웍스 학생 인턴 <span class="fact-date">2020.08 — 2020.09</span></dd></div></dl>
     </section>
-    <section id="contact" class="contact-section page-width support-contact" aria-labelledby="contact-title"><div><p class="section-kicker">CONTACT</p><h2 id="contact-title">작은 불편함도 살피는<br>동료가 되겠습니다.</h2><p>전산·OA·IT 사용자 지원 직무를 준비하고 있습니다.</p></div><div class="contact-links"><a href="mailto:youns1998@gmail.com">youns1998@gmail.com <span aria-hidden="true">↗</span></a><a href="https://github.com/youns1998" target="_blank" rel="noopener noreferrer">GitHub <span aria-hidden="true">↗</span></a></div></section>
+    <section id="contact" class="contact-section" aria-labelledby="contact-title">
+      <h2 id="contact-title">연락처</h2>
+      <div class="contact-links"><a href="mailto:youns1998@gmail.com">youns1998@gmail.com</a><a href="https://github.com/youns1998" target="_blank" rel="noopener noreferrer">GitHub ↗</a></div>
+    </section>
   </main>
-  <footer class="site-footer page-width"><span>© <span id="year"></span> 최윤성</span><span>IT Support & Software Portfolio</span><a href="#top">맨 위로 ↑</a></footer>
-  <script src="data/projects.js?v=20261025-3"></script>
-  <script src="js/portfolio.js?v=20261025-3"></script>
+  <footer class="site-footer page-width"><span>© <span id="year"></span> 최윤성</span><a href="#top">맨 위로 ↑</a></footer>
+  <script src="data/projects.js?v=20261025-4"></script>
+  <script src="js/portfolio.js?v=20261025-4"></script>
 </body>
 </html>

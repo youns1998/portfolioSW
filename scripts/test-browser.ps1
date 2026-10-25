@@ -132,14 +132,11 @@ try {
     foreach ($width in @(1440,1280,900,700,600,390,320)) {
         Set-Viewport $width
         Open-Page 'index.html'
-        Assert-Js "OA identity and supplied background at $width px" 'document.title.includes("IT Support") && document.querySelector("h1").textContent.includes("업무") && document.querySelector("#about").textContent.includes("플러그미디어웍스") && document.querySelector(".hero-role").textContent.includes("OA")'
-        Assert-Js "Project directory keeps all three subjects at $width px" '[...document.querySelectorAll(".case-card")].map(c=>c.dataset.project).join(",")==="cad-productivity-palette,it-support-desk,pc-troubleshooting-lab" && document.querySelectorAll(".project-type").length===3'
-        Assert-Js "Visuals have concise illustration captions at $width px" '[...document.querySelectorAll(".case-preview figcaption")].every(n=>n.textContent.includes("일러스트")||n.textContent.includes("샘플 데이터")) && !document.querySelector(".unfinished-note,.project-status,.todo-marker,.evidence-slot")'
-        Assert-Js "Cards open local case studies at $width px" '[...document.querySelectorAll(".case-card")].every(c=>[...c.querySelectorAll(".case-title a,.case-detail-link")].every(a=>new URL(a.href).searchParams.get("project")===c.dataset.project))'
-        Assert-Js "Project repository and demo links are disabled at $width px" '[...document.querySelectorAll(".case-card")].every(c=>!c.querySelector("a[target=\"_blank\"]")) && window.portfolioSettings.projectLinks===false'
-        Assert-Js "Automation filter works at $width px" 'document.querySelector("[data-filter=automation]").click();document.querySelectorAll(".case-card:not([hidden])").length===1 && document.querySelector("[data-filter=automation]").getAttribute("aria-pressed")==="true" && document.querySelector("#project-filter-count").textContent==="1개 프로젝트"'
-        Assert-Js "Support filter works at $width px" 'document.querySelector("[data-filter=support]").click();document.querySelectorAll(".case-card:not([hidden])").length===2 && [...document.querySelectorAll(".case-card:not([hidden])")].every(c=>c.dataset.category==="support")'
-        Assert-Js "All filter restores cards at $width px" 'document.querySelector("[data-filter=all]").click();document.querySelectorAll(".case-card:not([hidden])").length===3'
+        Assert-Js "Concise identity and background at $width px" 'document.title.includes("IT Support") && document.querySelector("h1").textContent==="최윤성" && document.querySelector("#about").textContent.includes("플러그미디어웍스") && document.querySelector(".intro-role").textContent.includes("OA")'
+        Assert-Js "Three projects remain accessible at $width px" '[...document.querySelectorAll(".project-entry")].map(c=>c.dataset.project).join(",")==="cad-productivity-palette,it-support-desk,pc-troubleshooting-lab" && [...document.querySelectorAll(".project-entry")].every(c=>c.querySelector("h3").textContent&&c.querySelector("p").textContent)'
+        Assert-Js "Homepage removes ornamental content at $width px" '!document.querySelector(".case-preview,.project-type,.project-filters,.profile-panel,.focus-strip,.approach-list,.skills-overview,.unfinished-note") && !document.querySelector("main img")'
+        Assert-Js "Each project has a single working detail link at $width px" '[...document.querySelectorAll(".project-entry")].every(c=>c.querySelectorAll("a").length===1&&new URL(c.querySelector("a").href).searchParams.get("project")===c.dataset.project)'
+        Assert-Js "Project external links stay disabled at $width px" '!document.querySelector(".project-entry a[target=\"_blank\"]") && window.portfolioSettings.projectLinks===false'
         Assert-Js "Home assets and layout at $width px" '[...document.images].every(i=>i.complete&&i.naturalWidth>0) && document.documentElement.scrollWidth<=innerWidth'
         Assert-Js "Header scroll offset at $width px" 'Math.abs(parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--header-height"))-document.querySelector("header").getBoundingClientRect().height)<1'
         Assert-Js "Finished presentation has no planning disclosure at $width px" '!document.querySelector(".learning-projects") && !document.querySelector("#work").textContent.match(/미완성|미구현|구현 예정|자료 보완/) && window.portfolioFeaturedProjects.length===2'
@@ -147,16 +144,16 @@ try {
     }
     Set-Viewport 1440
     Open-Page 'index.html'
-    Assert-Js 'Work navigation works' 'document.querySelector("nav a[href=\"#work\"]").click();new Promise(r=>setTimeout(()=>r(location.hash==="#work"&&document.querySelector("nav a[aria-current=location]").hash==="#work"),150))'
-    Assert-Js 'Background navigation works' 'document.querySelector("nav a[href=\"#about\"]").click();new Promise(r=>setTimeout(()=>r(document.querySelector("nav a[aria-current=location]").hash==="#about"),150))'
+    Assert-Js 'Project navigation reaches the list' 'document.querySelector("nav a[href=\"#work\"]").click();new Promise(r=>setTimeout(()=>r(location.hash==="#work"&&document.querySelector("#work").getBoundingClientRect().top<innerHeight),150))'
+    Assert-Js 'About navigation reaches the background' 'document.querySelector("nav a[href=\"#about\"]").click();new Promise(r=>setTimeout(()=>r(location.hash==="#about"&&document.querySelector("#about").getBoundingClientRect().top<innerHeight),150))'
     Assert-Js 'Contact navigation works' 'document.querySelector("nav a[href=\"#contact\"]").click();new Promise(r=>setTimeout(()=>r(document.querySelector("nav a[aria-current=location]").hash==="#contact"),150))'
     foreach ($width in @(1440,390,320)) {
         Set-Viewport $width
         foreach ($project in @('cad-productivity-palette','it-support-desk','pc-troubleshooting-lab')) {
             Open-Page ('projects/detail.html?project=' + $project)
-            Assert-Js "Case detail is filled with highlights and workflow at $width px for $project" '!!document.querySelector(".case-detail h1") && document.querySelectorAll(".case-overview section").length===3 && document.querySelectorAll(".case-feature-item").length===3 && document.querySelectorAll(".case-workflow li").length===4 && !document.querySelector(".completion-notice,.todo-marker,.evidence-slot,.implementation-section")'
+            Assert-Js "Concise detail preserves context and features at $width px for $project" '!!document.querySelector(".case-heading h1") && document.querySelectorAll(".case-overview p").length===2 && document.querySelectorAll(".case-feature-list li").length===3 && !document.querySelector(".case-preview,.case-workflow,.case-feature-grid,.case-facts,.completion-notice,.todo-marker,.evidence-slot")'
             Assert-Js "Case detail fits viewport at $width px for $project" 'document.documentElement.scrollWidth<=innerWidth'
-            Assert-Js "Finished project copy has no external actions or pending wording at $width px for $project" '!document.querySelector(".case-detail .case-actions a") && !document.querySelector("#project-detail").textContent.match(/미완성|미구현|구현 예정|자료 보완|기능 범위로 잡았습니다/) && /구현했습니다|정리했습니다|문서화했습니다|객체/.test(document.querySelector(".case-feature-grid").textContent)'
+            Assert-Js "Project detail retains finished copy without external actions at $width px for $project" '!document.querySelector(".case-detail .case-actions a") && !document.querySelector("#project-detail").textContent.match(/미완성|미구현|구현 예정|자료 보완/) && /구현했습니다|정리했습니다|문서화했습니다|객체/.test(document.querySelector(".case-feature-list").textContent)'
             if ($width -eq 1440 -and $project -eq 'it-support-desk') {
                 $shot = Send-Cdp 'Page.captureScreenshot' @{ format = 'png'; captureBeyondViewport = $true }
                 [IO.File]::WriteAllBytes((Join-Path $root '.codex-preview/detail-1440.png'), [Convert]::FromBase64String($shot.data))

@@ -39,7 +39,7 @@ cases 폴더의 공통 기록 서식, 읽기 전용 Collect-SystemInfo.ps1, 가�
 
 HTML·CSS·순수 JavaScript 정적 사이트이며 docs가 배포 루트입니다. 새 프레임워크는 필요 없습니다.
 메인은 `portfolioProjects` 중 caseStudy가 있는 공개 항목과 `portfolioSupportProjects`를 표시합니다.
-Spring·GIS는 `portfolioFeaturedProjects`에 있으며 데이터와 기존 상세 주소만 보존합니다. 메인은 분야 필터를 사용하며 미완성 표시와 빈 자료 영역은 렌더링하지 않습니다. 완성본 소개와 핵심 구성·업무 흐름은 `portfolioPresentations`에서 관리합니다.
+Spring·GIS는 `portfolioFeaturedProjects`에 있으며 데이터와 기존 상세 주소만 보존합니다. 메인은 제목·한 줄 설명·기술·상세 링크로 된 목록입니다. 필터·예시 그림·배지·미완성 표시·빈 자료 영역은 사용하지 않습니다. 한 줄 설명(summary)과 기술(technologies), 상세 개요와 주요 기능은 portfolioPresentations에서 관리합니다.
 기존 ID·상세 주소·숨겨진 개발 작업·건축 외부 링크·문서/영상 호환 코드를 유지합니다.
 실제 결과는 projects.js의 필드만 갱신하고, 완료한 steps/evidence 항목은 제거합니다.
 구성 예시를 실제 실행 화면으로 표시하지 않습니다.
