@@ -3,12 +3,12 @@
 콘텐츠 기준은 2026-10-25 첫 커밋 03c6705 직전 커밋인 2202306입니다. docs/data/projects.js의 원본 프로젝트 제목·설명·기술·범위를 따르세요.
 
 - 주력: Spring CRUD, GIS 공간 데이터.
-- 개발 도구: CAD Productivity Palette, Drawing File Organizer.
-- 만화카페·단독주택 도면과 Revit BIM은 SW 목록·상세에서 제외합니다. 사용자 요청 없이 다시 추가하지 않습니다.
+- 개발 도구: CAD Productivity Palette. 총 3개 프로젝트만 표시합니다.
+- Organizer·만화카페·단독주택 도면과 Revit BIM은 SW 목록·상세에서 제외합니다. 사용자 요청 없이 다시 추가하지 않습니다.
 - 새로운 OA 예시 프로젝트 두 개는 제거했습니다. 다시 추가하지 않습니다.
 - 자기소개·학력·자격·인턴·연락처는 사람인에 있으므로 포트폴리오에는 넣지 않습니다.
 - 현재의 간결한 텍스트 목록과 상세를 유지합니다. 예시 그림·배지·필터를 추가하지 않습니다.
-- 프로젝트 외부 저장소·데모 링크는 portfolioSettings.projectLinks=false로 비활성화합니다.
+- 각 프로젝트 항목은 로컬 상세를 거치지 않고 GitHub 저장소로 바로 연결합니다. portfolioSettings.projectLinks=true를 사용하며 짧은 부연 설명도 함께 표시합니다.
 - 기존 프로젝트의 검증 기록과 제한을 보존하며, 미확인 결과를 추가하지 않습니다.
 - HTML·CSS·JavaScript 정적 사이트이며 main의 /docs가 배포 루트입니다.
 
