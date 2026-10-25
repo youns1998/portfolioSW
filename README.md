@@ -1,41 +1,47 @@
-# 최윤성 포트폴리오
+# Software Portfolio
 
-프로젝트와 작업 설명만 표시하는 정적 사이트입니다. 각 프로젝트의 실제 구현과 검증 내용을 짧게 소개하고 GitHub 저장소로 연결합니다.
+세 프로젝트의 개발 작업공간과 포트폴리오 소개 페이지입니다.
 
-## 콘텐츠 기준
+| 프로젝트 | 코드 저장소 | 주력 코드 |
+|---|---|---|
+| 사업·업무 관리 | [portfolioSPR](https://github.com/youns1998/portfolioSPR) | Spring 요청·업무 규칙·DB |
+| 시설 점검 GIS | [portfolioGIS](https://github.com/youns1998/portfolioGIS) | Python 공간 분석·지도·PostGIS |
+| CAD Productivity Palette | [cad-productivity-palette](https://github.com/youns1998/cad-productivity-palette) | C# 점검 규칙·AutoCAD·WPF |
 
-2202306에서 시작한 콘텐츠를 바탕으로, 세 저장소의 구현 결과를 반영했습니다. 각 항목에는 짧은 소개, 부연 설명, 사용 기술을 표시합니다.
+## 코드 작업공간
 
-표시 순서:
+아래처럼 네 저장소를 같은 상위 폴더에 둔 뒤 [SoftwarePortfolio.code-workspace](SoftwarePortfolio.code-workspace)를 VS Code에서 엽니다. 각 저장소의 Git 이력은 독립적으로 유지됩니다.
 
-1. 사업·업무 관리 — 로그인·권한, 사업 CRUD, 업무 상태·이력, CSV
-2. 시설 점검 GIS — 가상 시설 공간 분석, 지도·GIS 파일, 실제 PostGIS 대조
-3. CAD Productivity Palette
+```text
+Projects/
+  portfolioSW/                  # 작업공간·소개 페이지
+  portfolioSPR/                 # Spring 코드
+  portfolioGIS/                 # GIS 코드
+  cad-productivity-palette/     # CAD 코드
+```
 
-새로 추가했던 IT 자산·문의 관리와 PC 장애 대응 기록은 제거했습니다. 자기소개·학력·자격·인턴·연락처는 사람인 이력서에 두며, 이 페이지에 다시 넣지 않습니다.
+Windows의 `작업 실행` 메뉴에서 `Spring: run/test`, `GIS: run/test`, `CAD: build/test/engine`을 선택합니다. CAD GUI는 빌드 후 AutoCAD에서 `NETLOAD`·`CADTOOLS`로 실행합니다.
 
-각 프로젝트 항목 전체를 클릭하면 GitHub 저장소를 새 탭으로 바로 엽니다. portfolioSPR, portfolioGIS, cad-productivity-palette에 연결하며 `portfolioSettings.projectLinks: true`를 사용합니다. Organizer·만화카페·단독주택 도면·Revit BIM은 SW 목록과 상세에서 제외합니다. 자세한 실행 방법·시연 데이터·검증 범위는 각 저장소 README에 있습니다.
+Java 21, Python 3.11+, .NET 10 SDK가 필요합니다. CAD 빌드·엔진 검사는 AutoCAD 2027도 필요합니다. 도구 경로는 시스템 PATH 또는 `.dev-tools.example.json`을 복사한 `.dev-tools.json`으로 지정합니다. 로컬 경로 파일은 Git에서 제외합니다.
 
-## 수정
+```powershell
+# 터미널에서도 실행 가능
+.\scripts\dev.ps1 -Project Spring -Action test
+.\scripts\dev.ps1 -Project GIS -Action run
+.\scripts\dev.ps1 -Project CAD -Action test
+```
 
-- `docs/index.html`: 프로젝트 목록 구성.
-- `docs/data/projects.js`: 프로젝트 설명과 렌더링 메타데이터.
-- `docs/js/portfolio.js`: 목록·공용 상세·문서·영상 렌더링.
-- `docs/css/portfolio.css`: 간결한 스타일과 모바일 배치.
+## 소개 페이지
 
-메인에서는 Spring·GIS 다음에 기존 개발 도구를 표시합니다. 건축·시각화·BIM 작업은 표시하지 않습니다. 그림·카드 장식·배지·필터는 사용하지 않습니다. 제외한 작업의 기존 상세 주소에는 목록 복귀 안내를 표시합니다. 공용 PDF·영상 코드는 보존합니다.
+- `docs/index.html`: 페이지 구성
+- `docs/data/projects.js`: 세 프로젝트 설명·저장소 링크
+- `docs/js/portfolio.js`, `docs/css/portfolio.css`: 표시·스타일
 
-## 실행·배포
-
-빌드와 패키지 설치 없이 `docs/index.html`을 직접 열거나 정적 서버로 확인합니다.
+페이지는 간단한 3개 항목을 유지하며 각 항목은 GitHub로 직접 연결합니다. 자기소개와 이력서 내용은 넣지 않습니다. GitHub Pages 배포 경로는 `main /docs`입니다.
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File scripts/validate.ps1
 powershell -ExecutionPolicy Bypass -File scripts/test-browser.ps1
 ```
 
-브라우저 검사는 320~1440px의 내용·순서·기술·링크·상세·가로 넘침을 확인합니다. 검사용 스크린샷은 `.codex-preview/`에 저장하며 Git에서 제외합니다.
-
-GitHub Pages는 main의 /docs를 사용합니다. 자산 버전은 두 HTML 모두 `20261026-1`입니다.
-
-사이트: https://youns1998.github.io/portfolioSW/
+[공개 페이지](https://youns1998.github.io/portfolioSW/) · [편집 기준](docs/maintenance/IMPLEMENTATION_PROMPT.md)

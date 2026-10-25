@@ -1,0 +1,215 @@
+{
+  "folders": [
+    {
+      "name": "Spring",
+      "path": "../portfolioSPR"
+    },
+    {
+      "name": "GIS",
+      "path": "../portfolioGIS"
+    },
+    {
+      "name": "CAD",
+      "path": "../cad-productivity-palette"
+    },
+    {
+      "name": "Portfolio",
+      "path": "."
+    }
+  ],
+  "settings": {
+    "files.exclude": {
+      "**/bin": true,
+      "**/obj": true,
+      "**/target": true,
+      "**/__pycache__": true,
+      "**/.codex-preview": true,
+      "**/.artifacts": true
+    }
+  },
+  "tasks": {
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "Spring: run",
+        "type": "process",
+        "command": "powershell.exe",
+        "args": [
+          "-NoProfile",
+          "-ExecutionPolicy",
+          "Bypass",
+          "-File",
+          "${workspaceFolder:Portfolio}/scripts/dev.ps1",
+          "-Project",
+          "Spring",
+          "-Action",
+          "run"
+        ],
+        "options": {
+          "cwd": "${workspaceFolder:Portfolio}"
+        },
+        "problemMatcher": []
+      },
+      {
+        "label": "Spring: test",
+        "type": "process",
+        "command": "powershell.exe",
+        "args": [
+          "-NoProfile",
+          "-ExecutionPolicy",
+          "Bypass",
+          "-File",
+          "${workspaceFolder:Portfolio}/scripts/dev.ps1",
+          "-Project",
+          "Spring",
+          "-Action",
+          "test"
+        ],
+        "options": {
+          "cwd": "${workspaceFolder:Portfolio}"
+        },
+        "problemMatcher": []
+      },
+      {
+        "label": "Spring: build",
+        "type": "process",
+        "command": "powershell.exe",
+        "args": [
+          "-NoProfile",
+          "-ExecutionPolicy",
+          "Bypass",
+          "-File",
+          "${workspaceFolder:Portfolio}/scripts/dev.ps1",
+          "-Project",
+          "Spring",
+          "-Action",
+          "build"
+        ],
+        "options": {
+          "cwd": "${workspaceFolder:Portfolio}"
+        },
+        "problemMatcher": []
+      },
+      {
+        "label": "GIS: run",
+        "type": "process",
+        "command": "powershell.exe",
+        "args": [
+          "-NoProfile",
+          "-ExecutionPolicy",
+          "Bypass",
+          "-File",
+          "${workspaceFolder:Portfolio}/scripts/dev.ps1",
+          "-Project",
+          "GIS",
+          "-Action",
+          "run"
+        ],
+        "options": {
+          "cwd": "${workspaceFolder:Portfolio}"
+        },
+        "problemMatcher": []
+      },
+      {
+        "label": "GIS: test",
+        "type": "process",
+        "command": "powershell.exe",
+        "args": [
+          "-NoProfile",
+          "-ExecutionPolicy",
+          "Bypass",
+          "-File",
+          "${workspaceFolder:Portfolio}/scripts/dev.ps1",
+          "-Project",
+          "GIS",
+          "-Action",
+          "test"
+        ],
+        "options": {
+          "cwd": "${workspaceFolder:Portfolio}"
+        },
+        "problemMatcher": []
+      },
+      {
+        "label": "GIS: build",
+        "type": "process",
+        "command": "powershell.exe",
+        "args": [
+          "-NoProfile",
+          "-ExecutionPolicy",
+          "Bypass",
+          "-File",
+          "${workspaceFolder:Portfolio}/scripts/dev.ps1",
+          "-Project",
+          "GIS",
+          "-Action",
+          "build"
+        ],
+        "options": {
+          "cwd": "${workspaceFolder:Portfolio}"
+        },
+        "problemMatcher": []
+      },
+      {
+        "label": "CAD: build",
+        "type": "process",
+        "command": "powershell.exe",
+        "args": [
+          "-NoProfile",
+          "-ExecutionPolicy",
+          "Bypass",
+          "-File",
+          "${workspaceFolder:Portfolio}/scripts/dev.ps1",
+          "-Project",
+          "CAD",
+          "-Action",
+          "build"
+        ],
+        "options": {
+          "cwd": "${workspaceFolder:Portfolio}"
+        },
+        "problemMatcher": []
+      },
+      {
+        "label": "CAD: test",
+        "type": "process",
+        "command": "powershell.exe",
+        "args": [
+          "-NoProfile",
+          "-ExecutionPolicy",
+          "Bypass",
+          "-File",
+          "${workspaceFolder:Portfolio}/scripts/dev.ps1",
+          "-Project",
+          "CAD",
+          "-Action",
+          "test"
+        ],
+        "options": {
+          "cwd": "${workspaceFolder:Portfolio}"
+        },
+        "problemMatcher": []
+      },
+      {
+        "label": "CAD: engine",
+        "type": "process",
+        "command": "powershell.exe",
+        "args": [
+          "-NoProfile",
+          "-ExecutionPolicy",
+          "Bypass",
+          "-File",
+          "${workspaceFolder:Portfolio}/scripts/dev.ps1",
+          "-Project",
+          "CAD",
+          "-Action",
+          "engine"
+        ],
+        "options": {
+          "cwd": "${workspaceFolder:Portfolio}"
+        },
+        "problemMatcher": []
+      }
+    ]
+  }
+}
