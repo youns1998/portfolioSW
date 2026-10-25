@@ -2,9 +2,21 @@
   "use strict";
 
   const projects = Array.isArray(window.portfolioProjects) ? window.portfolioProjects : [];
+  const featuredProjects = Array.isArray(window.portfolioFeaturedProjects)
+    ? window.portfolioFeaturedProjects
+    : (Array.isArray(window.portfolioPlannedProjects) ? window.portfolioPlannedProjects : []);
+  const statuses = window.portfolioStatuses || {};
+  const supportProjects = Array.isArray(window.portfolioSupportProjects) ? window.portfolioSupportProjects : [];
+  const presentations = window.portfolioPresentations || {};
+  const projectLinksEnabled = window.portfolioSettings?.projectLinks !== false;
+  const statusKey = (project) => statuses[project.status] ? project.status : (featuredProjects.includes(project) ? "planned" : "");
+  const statusInfo = (project) => statuses[statusKey(project)];
+  const isPlanned = (project) => statusKey(project) === "planned";
+  const texts = (value) => (Array.isArray(value) ? value : [value]).filter((item) => typeof item === "string" && item.trim());
+  const documentsFor = (project) => Array.isArray(project.documents) ? project.documents : [];
   const page = document.body.dataset.page;
   const software = document.body.dataset.focus === "software";
-  const isSoftwareProject = (project) => project.kind !== "architecture" && Boolean(project.url) && !project.documents.length;
+  const isSoftwareProject = (project) => project.kind !== "architecture" && Boolean(project.url) && !documentsFor(project).length;
   const asset = (path) => (page === "detail" ? "../" : "") + path;
   const detailUrl = (project, documentId) => {
     const params = new URLSearchParams({ project: project.id });
@@ -36,6 +48,81 @@
     append(row, node("dt", "", label), node("dd", "", value));
     parent.append(row);
   };
+
+  function appendStatus(parent, project, includeNote = false) {
+    const status = statusInfo(project);
+    if (!status) return;
+    const badge = node("span", "project-status", status.label);
+    badge.dataset.status = statusKey(project);
+    parent.append(badge);
+    if (includeNote && status.note) parent.append(node("p", "project-status-note", status.note));
+    if (texts(project.statusNote).length) parent.append(node("p", "project-status-note", texts(project.statusNote).join(" ")));
+  }
+
+  function appendTools(parent, project) {
+    const values = texts(project.tools);
+    if (!values.length) return;
+    const tools = node("ul", "project-tools");
+    tools.setAttribute("aria-label", isPlanned(project) ? "계획한 기술" : "사용 기술");
+    values.forEach((tool) => tools.append(node("li", "", tool)));
+    parent.append(tools);
+  }
+
+  // Shared by featured cards and detail pages. Planned work never presents results as implemented.
+  function appendProjectContent(parent, project, detail = false) {
+    if (isPlanned(project)) return;
+    const section = (name, title) => {
+      const area = node("section", "project-content project-content--" + name);
+      area.dataset.content = name;
+      area.append(node(detail ? "h2" : "h5", "", title));
+      parent.append(area);
+      return area;
+    };
+    const features = texts(project.features);
+    if (features.length) {
+      const list = node("ul", "project-features");
+      features.forEach((feature) => list.append(node("li", "", feature)));
+      section("features", "구현 기능").append(list);
+    }
+    const architecture = texts(project.architecture);
+    if (architecture.length) {
+      const area = section("architecture", "시스템 구성");
+      architecture.forEach((text) => area.append(node("p", "", text)));
+    }
+    const verification = texts(project.verification);
+    if (verification.length) {
+      const area = section("verification", "테스트 및 확인 범위");
+      verification.forEach((text) => area.append(node("p", "project-verification", text)));
+    }
+    const screenshots = (Array.isArray(project.screenshots) ? project.screenshots : [])
+      .filter((shot) => shot && texts(shot.file).length);
+    if (screenshots.length) {
+      const area = section("screenshots", "실제 결과 화면");
+      const gallery = node("div", "project-screenshots");
+      area.append(gallery);
+      screenshots.forEach((shot) => {
+        const figure = node("figure", "project-screenshot");
+        const image = node("img");
+        image.alt = shot.alt || shot.caption || project.title + " 실행 화면";
+        image.loading = "lazy";
+        image.addEventListener("error", () => {
+          figure.remove();
+          if (!gallery.childElementCount) area.remove();
+        }, { once: true });
+        image.src = asset(shot.file);
+        figure.append(image);
+        if (texts(shot.caption).length) figure.append(node("figcaption", "", shot.caption));
+        gallery.append(figure);
+      });
+    }
+  }
+
+  function appendFeaturedLinks(parent, project, includeDetail) {
+    if (includeDetail) parent.append(link("상세 보기", detailUrl(project), "featured-detail-link"));
+    if (!projectLinksEnabled) return;
+    if (texts(project.repositoryUrl).length) parent.append(link("GitHub ↗", project.repositoryUrl, "featured-repository", true));
+    if (!isPlanned(project) && texts(project.demoUrl).length) parent.append(link("데모 ↗", project.demoUrl, "featured-demo", true));
+  }
 
   function createVideoStage(media, fallbackPoster) {
     const stage = node("div", "isometric-stage");
@@ -77,7 +164,192 @@
     return stage;
   }
 
+  function createCasePreview(project) {
+    const figure = node("figure", "case-preview preview--" + project.caseStudy.mockup);
+    figure.setAttribute("aria-label", project.title + " 구성 예시");
+    const chrome = node("div", "preview-chrome");
+    append(chrome, node("span", "preview-dots", "● ● ●"), node("span", "", project.shortTitle));
+    figure.append(chrome);
+    const screen = node("div", "preview-screen");
+    if (project.caseStudy.mockup === "cad") {
+      const drawing = node("div", "cad-drawing");
+      drawing.setAttribute("aria-hidden", "true");
+      append(drawing, node("div", "drawing-room room-one"), node("div", "drawing-room room-two"), node("div", "drawing-room room-three"), node("span", "drawing-label", "WORKSPACE / 01"));
+      const palette = node("div", "cad-palette");
+      append(palette, node("strong", "", "CAD TOOLS"), node("span", "", "선택 객체 편집"), node("span", "", "Quick Tools ↗"), node("span", "", "도면 점검"));
+      append(screen, drawing, palette);
+    } else if (project.caseStudy.mockup === "desk") {
+      append(screen, node("p", "preview-eyebrow", "IT SUPPORT DESK"), node("strong", "preview-heading", "자산과 문의를 한눈에"));
+      const table = node("table", "preview-table");
+      const caption = node("caption", "sr-only", "가상의 문의 데이터. 화면 구성 예시입니다.");
+      const head = node("thead");
+      const headings = node("tr");
+      ["자산 번호", "문의 내용", "상태"].forEach((text) => headings.append(node("th", "", text)));
+      head.append(headings);
+      const body = node("tbody");
+      [["PC-DEMO-01", "프로그램 설치 요청", "접수"], ["PC-DEMO-02", "네트워크 연결 확인", "확인 중"], ["PC-DEMO-03", "모니터 연결 문의", "처리 완료"]].forEach((values) => {
+        const row = node("tr");
+        values.forEach((value) => row.append(node("td", "", value)));
+        body.append(row);
+      });
+      append(table, caption, head, body);
+      screen.append(table);
+    } else {
+      append(screen, node("p", "preview-eyebrow", "TROUBLESHOOTING NOTE / TEMPLATE"), node("strong", "preview-heading", "연결되지 않을 때, 어디부터?"));
+      const steps = node("div", "preview-flow");
+      ["01 증상 확인", "02 원인 점검", "03 조치·검증"].forEach((text) => steps.append(node("span", "", text)));
+      append(screen, steps, node("p", "preview-note", "증상 → 확인 명령 → 결과 → 재발 방지"), node("code", "preview-code", "Get-NetIPConfiguration"));
+    }
+    append(figure, screen, node("figcaption", "", project.caseStudy.mockup === "cad" ? "AutoCAD 팔레트 · 기능 구성 일러스트" : "화면 구성 · 샘플 데이터"));
+    return figure;
+  }
+
   function renderHome() {
+    if (document.body.dataset.layout !== "support") return renderDirectoryHome();
+    const list = document.getElementById("software-project-list");
+    if (!list) return;
+    const cases = [...projects.filter((project) => project.caseStudy && project.showOnHome !== false), ...supportProjects.filter((project) => project.showOnHome !== false)];
+    cases.forEach((project, index) => {
+      const presentation = presentations[project.id] || {};
+      const article = node("article", "case-card project-row");
+      article.dataset.project = project.id;
+      article.dataset.status = statusKey(project);
+      article.dataset.category = presentation.filter || "support";
+      const copy = node("div", "case-copy");
+      const top = node("div", "case-topline");
+      append(top, node("span", "case-number", String(index + 1).padStart(2, "0") + " / " + project.category), node("span", "", ""));
+      top.append(node("span", "project-type", presentation.badge || "개인 프로젝트"));
+      const title = node("h3", "case-title");
+      title.id = "project-title-" + project.id;
+      article.setAttribute("aria-labelledby", title.id);
+      title.append(link(project.title, detailUrl(project)));
+      append(copy, top, title, node("p", "case-label", project.caseStudy.label), node("p", "project-card-description", project.description));
+      appendTools(copy, project);
+      const actions = node("div", "case-actions");
+      actions.append(link("프로젝트 자세히 보기 →", detailUrl(project), "case-detail-link"));
+      if (projectLinksEnabled && project.readmeUrl) actions.append(link("GitHub README ↗", project.readmeUrl, "project-open-link", true));
+      append(copy, actions);
+      append(article, copy, createCasePreview(project));
+      list.append(article);
+    });
+    const learning = document.getElementById("learning-project-list");
+    featuredProjects.filter((project) => project.showOnHome !== false).forEach((project) => {
+      const row = node("div", "learning-row");
+      append(row, link(project.title, detailUrl(project)), node("span", "", statusInfo(project)?.label || "준비 중"));
+      learning?.append(row);
+    });
+    const buttons = Array.from(document.querySelectorAll("[data-filter]"));
+    const applyFilter = (filter) => {
+      let count = 0;
+      Array.from(list.children).forEach((card) => {
+        card.hidden = filter !== "all" && card.dataset.category !== filter;
+        if (!card.hidden) count++;
+      });
+      buttons.forEach((button) => button.setAttribute("aria-pressed", String(button.dataset.filter === filter)));
+      document.getElementById("project-filter-count").textContent = count + "개 프로젝트";
+    };
+    buttons.forEach((button) => button.addEventListener("click", () => applyFilter(button.dataset.filter)));
+    applyFilter("all");
+  }
+
+  function renderCaseDetail(root, project) {
+    const presentation = presentations[project.id] || {};
+    root.dataset.status = statusKey(project);
+    root.classList.add("case-detail");
+    root.replaceChildren(link("← 전체 프로젝트", "../index.html#work", "back-link"));
+    const intro = node("section", "case-detail-intro");
+    const heading = node("div", "detail-heading");
+    heading.append(node("span", "project-type", presentation.badge || "개인 프로젝트"));
+    append(heading, node("p", "section-kicker", project.category), node("h1", "", project.title), node("p", "detail-lead", project.description));
+    appendTools(heading, project);
+    const actions = node("div", "case-actions");
+    const repository = texts(project.readmeUrl)[0] || texts(project.repositoryUrl)[0] || texts(project.url)[0];
+    if (projectLinksEnabled && repository) actions.append(link("GitHub README ↗", repository, "text-button", true));
+    if (projectLinksEnabled && !isPlanned(project) && texts(project.demoUrl).length) actions.append(link("실행 데모 ↗", project.demoUrl, "text-button", true));
+    if (actions.childElementCount) heading.append(actions);
+    append(intro, heading, createCasePreview(project));
+    root.append(intro);
+    const overview = node("div", "case-overview");
+    [["프로젝트 배경", presentation.problem || project.caseStudy.problem], ["구성 방식", presentation.approach || project.caseStudy.approach], ["업무 관점", presentation.focus || project.caseStudy.goal]].forEach(([title, text]) => {
+      const section = node("section");
+      append(section, node("h2", "", title), node("p", "", text));
+      overview.append(section);
+    });
+    root.append(overview);
+    const facts = node("dl", "detail-facts case-facts");
+    line(facts, "담당 범위", presentation.role);
+    line(facts, "연결 업무", project.caseStudy.relevance);
+    line(facts, "프로젝트 구성", project.scope);
+    if (!isPlanned(project)) line(facts, "기록된 검증", texts(project.verification).join(" "));
+    root.append(facts);
+    appendProjectContent(root, project, true);
+    const features = node("section", "case-features-section");
+    append(features, node("p", "section-kicker", "PROJECT HIGHLIGHTS"), node("h2", "", "핵심 구성"));
+    const grid = node("div", "case-feature-grid");
+    (presentation.features || []).forEach((feature, index) => {
+      const item = node("article", "case-feature-item");
+      append(item, node("span", "feature-index", String(index + 1).padStart(2, "0")), node("h3", "", feature.title), node("p", "", feature.body));
+      grid.append(item);
+    });
+    features.append(grid);
+    if (grid.childElementCount) root.append(features);
+    const workflow = node("section", "case-workflow-section");
+    append(workflow, node("p", "section-kicker", "WORKFLOW"), node("h2", "", "업무 흐름"));
+    const flow = node("ol", "case-workflow");
+    texts(presentation.workflow).forEach((text, index) => {
+      const step = node("li");
+      append(step, node("span", "", String(index + 1).padStart(2, "0")), node("strong", "", text));
+      flow.append(step);
+    });
+    workflow.append(flow);
+    if (flow.childElementCount) root.append(workflow);
+    const closing = node("div", "case-closing");
+    append(closing, node("p", "", "업무의 맥락을 이해하고, 필요한 도구와 기록으로 연결합니다."), link("다른 프로젝트 살펴보기 →", "../index.html#work", "case-detail-link"));
+    root.append(closing);
+  }
+
+  function renderDirectoryHome() {
+    const list = document.getElementById("software-project-list");
+    if (!list) return renderLegacyHome();
+    list.replaceChildren();
+    // Existing tools first, followed by Spring/GIS. Full project descriptions live in each README.
+    const homeProjects = [...projects.filter(isSoftwareProject), ...featuredProjects]
+      .filter((project) => project.showOnHome !== false);
+    homeProjects.forEach((project) => {
+      const repository = texts(project.repositoryUrl)[0] || texts(project.url)[0];
+      const readmeUrl = texts(project.readmeUrl)[0] || (repository ? repository.split("#")[0] + "#readme" : "");
+      const article = node("article", "project-card project-card--supporting project-row");
+      article.dataset.project = project.id;
+      article.dataset.status = statusKey(project);
+      const copy = node("div", "project-card-copy");
+      const titleRow = node("div", "project-title-row");
+      const title = node("h3", "project-card-title");
+      title.id = "project-title-" + project.id;
+      article.setAttribute("aria-labelledby", title.id);
+      if (readmeUrl) {
+        const open = link(project.title, readmeUrl, "", true);
+        open.setAttribute("aria-label", project.title + " GitHub README 보기 (새 창)");
+        title.append(open);
+      } else {
+        title.textContent = project.title;
+      }
+      titleRow.append(title);
+      appendStatus(titleRow, project);
+      copy.append(titleRow);
+      if (texts(project.description).length) copy.append(node("p", "project-card-description", project.description));
+      appendTools(copy, project);
+      article.append(copy);
+      if (readmeUrl) {
+        const open = link("README ↗", readmeUrl, "project-open-link repository-link", true);
+        open.setAttribute("aria-label", project.title + " GitHub README 보기 (새 창)");
+        article.append(open);
+      }
+      list.append(article);
+    });
+  }
+
+  // Preserve the shared document/video layout for older markup and existing detail URLs.
+  function renderLegacyHome() {
     const drawings = document.getElementById("drawing-project-list");
     const repositories = document.getElementById("github-project-list");
     if (!drawings || !repositories) return;
@@ -91,11 +363,16 @@
       if (isCode !== software || (software && project.role === "supporting")) {
         article.classList.add("project-card--supporting");
         const copy = node("div", "project-card-copy");
-        append(copy, node("p", "eyebrow", project.category), node("h4", "project-card-title", project.title), node("p", "project-card-description", project.description));
-        if (isCode && project.verification) copy.append(node("p", "project-verification", project.verification));
+        const titleRow = node("div", "project-title-row");
+        const title = node("h4", "project-card-title");
+        if (isCode) title.append(link(project.title, detailUrl(project)));
+        else title.textContent = project.title;
+        titleRow.append(title);
+        if (isCode) appendStatus(titleRow, project);
+        append(copy, titleRow, node("p", "project-card-description", project.description));
         const open = link("", project.readmeUrl || project.url, "project-open-link repository-link", true);
         open.setAttribute("aria-label", project.title + (isCode ? " GitHub README 보기 (새 창)" : " 작업 자료 보기 (새 창)"));
-        append(open, node("span", "", isCode ? "GitHub README 보기" : "작업 자료 보기"), node("span", "project-open-arrow", "↗"));
+        open.textContent = isCode ? "GitHub ↗" : "작업 보기 ↗";
         append(article, copy, open);
         list.append(article);
         return;
@@ -104,7 +381,7 @@
         ? link("", detailUrl(project), "project-card-visual drawing-thumbnail-link")
         : node("div", "project-card-visual");
       if (figure.tagName === "A") figure.setAttribute("aria-label", project.title + " 도면·자료 보기");
-      const documents = project.documents.filter((item) => item.file);
+      const documents = documentsFor(project).filter((item) => item.file);
       const thumbnail = project.thumbnail || documents.find((item) => item.thumbnail)?.thumbnail;
       if (project.video?.file) {
         figure.append(createVideoStage(project.video, thumbnail));
@@ -175,24 +452,29 @@
         copy.insertBefore(index, actions);
       }
     });
-    document.getElementById("drawing-project-count").textContent = String(drawings.childElementCount).padStart(2, "0") + (software ? " VISUAL WORKS" : " PROJECTS");
-    document.getElementById("github-project-count").textContent = String(repositories.childElementCount).padStart(2, "0") + " REPOSITORIES";
+    const drawingCount = document.getElementById("drawing-project-count");
+    const repositoryCount = document.getElementById("github-project-count");
+    if (drawingCount) drawingCount.textContent = String(drawings.childElementCount);
+    if (repositoryCount) repositoryCount.textContent = String(repositories.childElementCount);
     const featured = document.getElementById("featured-project-list");
     if (featured) {
       featured.replaceChildren();
-      (window.portfolioPlannedProjects || []).forEach((project, index) => {
+      featuredProjects.forEach((project) => {
         const article = node("article", "featured-project");
         article.dataset.featured = project.id;
-        const tools = node("ul", "project-tools");
-        tools.setAttribute("aria-label", "계획한 기술과 작업 범위");
-        (project.tools || []).forEach((tool) => tools.append(node("li", "", tool)));
-        append(article, node("p", "eyebrow", String(index + 1).padStart(2, "0") + " / " + project.area), node("h4", "", project.title), node("p", "featured-description", project.description), tools, node("p", "featured-scope", project.scope));
+        article.dataset.status = statusKey(project);
+        appendStatus(article, project);
+        article.append(node("h4", "", project.title));
+        if (texts(project.description).length) article.append(node("p", "featured-description", project.description));
+        appendTools(article, project);
+        appendProjectContent(article, project);
         const footer = node("div", "featured-footer");
-        footer.append(node("span", "featured-status", "준비 중 · 구현 결과 추후 공개"));
-        if (project.repositoryUrl) footer.append(link("GitHub 저장소 보기 ↗", project.repositoryUrl, "featured-repository", true));
+        appendFeaturedLinks(footer, project, true);
         article.append(footer);
         featured.append(article);
       });
+      const count = document.getElementById("featured-project-count");
+      if (count) count.textContent = String(featured.childElementCount).padStart(2, "0") + " PROJECTS";
     }
   }
 
@@ -200,17 +482,40 @@
     const root = document.getElementById("project-detail");
     if (!root) return;
     const params = new URLSearchParams(location.search);
-    const project = projects.find((entry) => entry.id === params.get("project"));
+    const project = [...supportProjects, ...featuredProjects, ...projects].find((entry) => entry.id === params.get("project"));
     if (!project) {
       root.replaceChildren(node("h1", "", "프로젝트를 찾을 수 없습니다."), link("프로젝트 목록으로", "../index.html#work", "button button-dark"));
       return;
     }
     document.title = project.title + " | 최윤성 포트폴리오";
+    if (project.caseStudy) return renderCaseDetail(root, project);
+    if (featuredProjects.includes(project)) {
+      const intro = node("section", "detail-intro featured-detail-intro");
+      const heading = node("div", "detail-heading");
+      appendStatus(heading, project);
+      heading.append(node("h1", "", project.title));
+      if (texts(project.description).length) heading.append(node("p", "detail-lead", project.description));
+      const facts = node("dl", "detail-facts");
+      line(facts, isPlanned(project) ? "기술 방향" : "사용 기술", texts(project.tools).join(" · "));
+      line(facts, isPlanned(project) ? "계획 범위" : "작업 범위", project.scope);
+      intro.append(heading);
+      if (facts.childElementCount) intro.append(facts);
+      root.dataset.status = statusKey(project);
+      root.replaceChildren(link("← 전체 프로젝트", "../index.html#work", "back-link"), intro);
+      appendProjectContent(root, project, true);
+      if (!isPlanned(project)) {
+        const actions = node("div", "featured-footer");
+        appendFeaturedLinks(actions, project, false);
+        if (actions.childElementCount) root.append(actions);
+      }
+      return;
+    }
     const back = link("← 전체 프로젝트", "../index.html#work", "back-link");
     const intro = node("section", "detail-intro");
     const heading = node("div", "detail-heading");
-    append(heading, node("p", "eyebrow", project.category), node("h1", "", project.title), node("p", "detail-lead", project.description));
-    if (project.url) heading.append(link(project.kind === "architecture" ? "건축 포트폴리오에서 자료 보기 ↗" : "GitHub에서 코드 보기 ↗", project.url, "button button-dark", true));
+    appendStatus(heading, project);
+    append(heading, node("h1", "", project.title), node("p", "detail-lead", project.description));
+    if (project.url && (projectLinksEnabled || project.kind === "architecture")) heading.append(link(project.kind === "architecture" ? "전체 작업 ↗" : "GitHub ↗", project.url, "button button-dark", true));
     const facts = node("dl", "detail-facts");
     line(facts, "유형", project.type);
     line(facts, "작업 기간", project.duration);
@@ -221,7 +526,7 @@
     append(intro, heading, facts);
     root.replaceChildren(back, intro);
 
-    const documents = project.documents;
+    const documents = documentsFor(project);
 
     if (documents.length) {
       const area = node("section", "document-area");
@@ -330,10 +635,10 @@
       select(requestedIndex >= 0 ? requestedIndex : 0, false);
     } else if (project.url) {
       const development = node("section", "development-detail");
-      append(development, node("p", "eyebrow", "PROJECT DETAILS"), node("h2", "", project.kind === "architecture" ? "건축 포트폴리오에서 이어 보기" : "주요 개발 내용"));
+      append(development, node("h2", "", project.kind === "architecture" ? "작업 자료" : "개발 내용"));
       const points = node("ul");
       (project.highlights || []).forEach((highlight) => points.append(node("li", "", highlight)));
-      if (project.kind === "architecture") development.append(node("p", "detail-lead", "AutoCAD 도면 작성과 SketchUp 시각화 경험을 보여주는 보조 자료입니다. 전체 도면과 렌더링 자료는 위 링크에서 확인할 수 있습니다."));
+      if (project.kind === "architecture") development.append(link("도면·렌더링 보기 ↗", project.url, "", true));
       append(development, points);
       root.append(development);
     }
@@ -355,9 +660,6 @@
 
   function setupHomeEffects() {
     if (!header) return;
-    const progress = node("span", "reading-progress");
-    progress.setAttribute("aria-hidden", "true");
-    header.append(progress);
     const navigation = Array.from(header.querySelectorAll('nav a[href^="#"]'))
       .map((anchor) => ({ anchor, section: document.getElementById(anchor.hash.slice(1)) }))
       .filter((entry) => entry.section);
@@ -365,9 +667,6 @@
     const updateNavigation = () => {
       scrollFrame = 0;
       const maximum = document.documentElement.scrollHeight - window.innerHeight;
-      const ratio = maximum > 0 ? Math.min(1, Math.max(0, window.scrollY / maximum)) : 0;
-      progress.style.transform = "scaleX(" + ratio + ")";
-      header.classList.toggle("is-scrolled", window.scrollY > 12);
       let active = navigation[0];
       const threshold = header.getBoundingClientRect().bottom + window.innerHeight * 0.2;
       navigation.forEach((entry) => {
@@ -386,47 +685,6 @@
     window.addEventListener("resize", scheduleNavigation, { passive: true });
     updateNavigation();
 
-    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const precisionPointer = window.matchMedia("(hover: hover) and (pointer: fine)");
-    const resets = [];
-    document.querySelectorAll(".hero-aside, .project-card, .project-card-visual, .tech-group").forEach((surface) => {
-      let pointerFrame = 0;
-      let pointerX = 0;
-      let pointerY = 0;
-      const reset = () => {
-        if (pointerFrame) cancelAnimationFrame(pointerFrame);
-        pointerFrame = 0;
-        surface.classList.remove("is-pointer-active");
-        ["--pointer-x", "--pointer-y", "--tilt-x", "--tilt-y"].forEach((property) => surface.style.removeProperty(property));
-      };
-      const updatePointer = () => {
-        pointerFrame = 0;
-        if (reducedMotion.matches || !precisionPointer.matches) return;
-        const bounds = surface.getBoundingClientRect();
-        if (!bounds.width || !bounds.height) return;
-        const x = Math.min(1, Math.max(0, (pointerX - bounds.left) / bounds.width));
-        const y = Math.min(1, Math.max(0, (pointerY - bounds.top) / bounds.height));
-        surface.style.setProperty("--pointer-x", (x * 100).toFixed(2) + "%");
-        surface.style.setProperty("--pointer-y", (y * 100).toFixed(2) + "%");
-        surface.style.setProperty("--tilt-x", ((0.5 - y) * 5).toFixed(2) + "deg");
-        surface.style.setProperty("--tilt-y", ((x - 0.5) * 5).toFixed(2) + "deg");
-        surface.classList.add("is-pointer-active");
-      };
-      surface.addEventListener("pointermove", (event) => {
-        if (event.pointerType !== "mouse" || reducedMotion.matches || !precisionPointer.matches) return;
-        pointerX = event.clientX;
-        pointerY = event.clientY;
-        if (!pointerFrame) pointerFrame = requestAnimationFrame(updatePointer);
-      }, { passive: true });
-      surface.addEventListener("pointerleave", reset);
-      surface.addEventListener("pointercancel", reset);
-      resets.push(reset);
-    });
-    const resetPointers = () => resets.forEach((reset) => reset());
-    reducedMotion.addEventListener?.("change", resetPointers);
-    precisionPointer.addEventListener?.("change", resetPointers);
-    window.addEventListener("blur", resetPointers);
-    window.addEventListener("scroll", resetPointers, { passive: true });
   }
 
   if (page === "home") setupHomeEffects();
