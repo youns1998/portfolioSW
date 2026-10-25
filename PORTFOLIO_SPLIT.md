@@ -1,7 +1,7 @@
 ﻿# 두 포트폴리오 관리 기준
 
-portfolioSW에는 소프트웨어 프로젝트와 CAD·SketchUp 시각화 작업 요약을 표시합니다. portfolioCAD에는 실제 도면·모델링·렌더링·PDF를 유지합니다.
+portfolioSW에는 Spring CRUD, GIS 공간 데이터, CAD Productivity Palette, Drawing File Organizer 네 개만 표시합니다.
 
-SW 프로젝트 내용의 기준은 2202306입니다. Spring CRUD와 GIS 공간 데이터를 먼저, CAD·Revit 도구와 Python 파일 자동화를 그다음에 표시합니다. 만화카페와 단독주택은 원본 건축 작업 자료로 연결합니다.
+만화카페·단독주택 도면과 Revit BIM 작업은 SW 목록과 상세에서 제외합니다. portfolioCAD와 별도 프로젝트 저장소는 수정하지 않습니다.
 
-디자인은 현재의 간결한 텍스트 목록을 유지합니다. 자기소개·이력서 내용과 새로 만들었던 OA 예시 두 개는 제외합니다. 두 사이트의 자산과 코드는 독립적으로 관리하며 건축 PDF를 복제하지 않습니다.
+남은 작업의 설명은 2202306을 기준으로 유지합니다. 현재의 간결한 텍스트 목록과 상세를 사용하며 자기소개·이력서 내용과 새 OA 예시는 넣지 않습니다.

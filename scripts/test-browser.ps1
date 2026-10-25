@@ -133,12 +133,11 @@ try {
         Set-Viewport $width
         Open-Page 'index.html'
         Assert-Js "Only portfolio content is shown at $width px" 'document.querySelector("h1").textContent==="프로젝트" && !document.querySelector(".intro,#about,#contact,.profile-facts,a[href^=\"mailto:\"]") && !document.querySelector("main").textContent.match(/학력|자격|정보처리기사|소프트웨어학과|인턴|지원자/)'
-        Assert-Js "Original five software projects keep their order at $width px" '[...document.querySelectorAll("#software-project-list .project-entry")].map(c=>c.dataset.project).join(",")==="spring-backend,gis-spatial,cad-productivity-palette,revit-bim-inspector,drawing-file-organizer"'
-        Assert-Js "Original visual work is preserved at $width px" '[...document.querySelectorAll("#visual-project-list .project-entry")].map(c=>c.dataset.project).join(",")==="comic-cafe,two-story-house"'
+        Assert-Js "Four software projects keep their order at $width px" '[...document.querySelectorAll("#software-project-list .project-entry")].map(c=>c.dataset.project).join(",")==="spring-backend,gis-spatial,cad-productivity-palette,drawing-file-organizer"'
+        Assert-Js "Architecture and BIM are excluded from the SW page at $width px" '!document.querySelector("#visual-project-list,.visual-section") && !document.querySelector("main").textContent.match(/만화카페|단독주택|Revit|BIM|SketchUp/) && !window.portfolioProjects.some(p=>["comic-cafe","two-story-house","revit-bim-inspector"].includes(p.id))'
         Assert-Js "Rendered titles and descriptions match source data at $width px" '[...document.querySelectorAll(".project-entry")].every(c=>{const p=[...window.portfolioProjects,...window.portfolioFeaturedProjects].find(p=>p.id===c.dataset.project);return c.querySelector(".project-entry-title").textContent===p.title && c.querySelector(".project-entry-copy > p").textContent===p.description;})'
         Assert-Js "Original technologies remain visible at $width px" '[...document.querySelectorAll("#software-project-list .project-entry")].every(c=>{const p=[...window.portfolioProjects,...window.portfolioFeaturedProjects].find(p=>p.id===c.dataset.project);return c.querySelector(".project-entry-tools").textContent===p.tools.join(" · ")&&getComputedStyle(c.querySelector(".project-entry-tools")).display!=="none";})'
         Assert-Js "Software entries open the right local detail at $width px" '[...document.querySelectorAll("#software-project-list .project-entry")].every(c=>c.querySelectorAll("a").length===1&&new URL(c.querySelector("a").href).searchParams.get("project")===c.dataset.project)'
-        Assert-Js "Visual entries point to original architecture documents at $width px" '[...document.querySelectorAll("#visual-project-list .project-entry")].every(c=>c.querySelector("a").href===window.portfolioProjects.find(p=>p.id===c.dataset.project).url)'
         Assert-Js "New OA examples are removed at $width px" '!window.portfolioSupportProjects && !document.querySelector("main").textContent.match(/IT 자산·문의 관리|PC 장애 대응 기록/)'
         Assert-Js "Layout remains restrained and fits at $width px" 'document.documentElement.scrollWidth<=innerWidth && !document.querySelector(".case-preview,.project-type,.project-filters,main img")'
         Assert-Js "Repository links remain disabled at $width px" '!document.querySelector("#software-project-list a[target=\"_blank\"]") && window.portfolioSettings.projectLinks===false'
@@ -149,11 +148,11 @@ try {
     Assert-Js 'Project navigation reaches the list' 'document.querySelector("nav a[href=\"#work\"]").click();new Promise(r=>setTimeout(()=>r(location.hash==="#work"&&document.querySelector("#work").getBoundingClientRect().top<innerHeight),150))'
     foreach ($width in @(1440,390,320)) {
         Set-Viewport $width
-        foreach ($project in @('spring-backend','gis-spatial','cad-productivity-palette','revit-bim-inspector','drawing-file-organizer','comic-cafe','two-story-house')) {
+        foreach ($project in @('spring-backend','gis-spatial','cad-productivity-palette','drawing-file-organizer')) {
             Open-Page ('projects/detail.html?project=' + $project)
             Assert-Js "Original detail title and description at $width px for $project" '(()=>{const p=[...window.portfolioProjects,...window.portfolioFeaturedProjects].find(p=>p.id===new URLSearchParams(location.search).get("project"));return document.querySelector("h1").textContent===p.title&&document.querySelector(".detail-lead").textContent===p.description;})()'
             Assert-Js "Detail fits viewport at $width px for $project" 'document.documentElement.scrollWidth<=innerWidth'
-            if ($project -in @('cad-productivity-palette','revit-bim-inspector','drawing-file-organizer')) {
+            if ($project -in @('cad-productivity-palette','drawing-file-organizer')) {
                 Assert-Js "Recorded scope and verification are preserved for $project" '(()=>{const p=window.portfolioProjects.find(p=>p.id===new URLSearchParams(location.search).get("project"));return [...document.querySelectorAll(".detail-facts dd")].some(n=>n.textContent===p.verification)&&document.querySelectorAll(".development-detail li").length===3&&!document.querySelector(".detail-heading a[href^=\"https://github.com/\"]");})()'
             }
             if ($width -eq 1440 -and $project -eq 'cad-productivity-palette') {
@@ -161,7 +160,7 @@ try {
                 [IO.File]::WriteAllBytes((Join-Path $root '.codex-preview/detail-1440.png'), [Convert]::FromBase64String($shot.data))
             }
         }
-        foreach ($project in @('invalid','it-support-desk','pc-troubleshooting-lab')) {
+        foreach ($project in @('invalid','it-support-desk','pc-troubleshooting-lab','comic-cafe','two-story-house','revit-bim-inspector')) {
             Open-Page ('projects/detail.html?project=' + $project)
             Assert-Js "Removed or unknown project offers a return at $width px for $project" 'document.querySelector("#project-detail h1").textContent.includes("찾을 수 없습니다") && !!document.querySelector("#project-detail a[href=\"../index.html#work\"]")'
         }

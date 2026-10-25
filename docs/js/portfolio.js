@@ -165,22 +165,20 @@
   function renderHome() {
     if (document.body.dataset.layout !== "support") return renderDirectoryHome();
     const list = document.getElementById("software-project-list");
-    const visualList = document.getElementById("visual-project-list");
     if (!list) return;
     list.replaceChildren();
-    visualList?.replaceChildren();
-    const renderEntry = (project, target, external = false) => {
+    const renderEntry = (project, target) => {
       if (!target) return;
       const article = node("article", "project-entry");
       article.dataset.project = project.id;
-      const anchor = link("", external ? project.url : detailUrl(project), "project-entry-link", external);
+      const anchor = link("", detailUrl(project), "project-entry-link");
       const copy = node("div", "project-entry-copy");
-      const title = node(external ? "h3" : "h2", "project-entry-title", project.title);
+      const title = node("h2", "project-entry-title", project.title);
       title.id = "project-title-" + project.id;
       anchor.setAttribute("aria-labelledby", title.id);
       append(copy, title, node("p", "", project.description));
       if (texts(project.tools).length) copy.append(node("p", "project-entry-tools", texts(project.tools).join(" · ")));
-      const arrow = node("span", "project-entry-arrow", external ? "↗" : "→");
+      const arrow = node("span", "project-entry-arrow", "→");
       arrow.setAttribute("aria-hidden", "true");
       append(anchor, copy, arrow);
       article.append(anchor);
@@ -189,8 +187,6 @@
     [...featuredProjects, ...projects.filter(isSoftwareProject)]
       .filter((project) => project.showOnHome !== false)
       .forEach((project) => renderEntry(project, list));
-    projects.filter((project) => project.kind === "architecture")
-      .forEach((project) => renderEntry(project, visualList, true));
   }
 
   function renderDirectoryHome() {

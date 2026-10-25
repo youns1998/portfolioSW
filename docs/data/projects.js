@@ -1,19 +1,5 @@
-/* Implemented work only. Architecture documents are maintained in portfolioCAD. */
+/* Software portfolio work. Architecture examples and Revit BIM are excluded. */
 window.portfolioProjects = [
-  {
-    id: "comic-cafe", kind: "architecture",
-    title: "SketchUp 모델링·렌더링 · 만화카페", category: "Visual Work / SketchUp · AutoCAD",
-    type: "3D 모델링·렌더링·도면 작성", description: "SketchUp으로 공간을 모델링하고 렌더링 이미지로 표현했습니다. AutoCAD 도면과 함께 2D·3D 시각 자료를 만든 작업입니다.",
-    url: "https://youns1998.github.io/portfolioCAD/projects/detail.html?project=comic-cafe",
-    documents: []
-  },
-  {
-    id: "two-story-house", kind: "architecture",
-    title: "AutoCAD 2D 도면 작성 · 단독주택", category: "Visual Work / AutoCAD",
-    type: "2D 도면 작성·편집", description: "AutoCAD로 평면·입면·단면과 상세 도면을 작성했습니다. 여러 뷰의 정보를 도면으로 표현하고 정리한 경험입니다.",
-    url: "https://youns1998.github.io/portfolioCAD/projects/detail.html?project=two-story-house",
-    documents: []
-  },
   {
     id: "cad-productivity-palette", role: "supporting",
     thumbnail: "images/projects/cad-productivity.svg",
@@ -39,33 +25,6 @@ window.portfolioProjects = [
       "도면 점검과 대상 객체 선택·이동"
     ],
     url: "https://github.com/youns1998/cad-productivity-palette",
-    documents: []
-  },
-  {
-    id: "revit-bim-inspector", role: "supporting",
-    thumbnail: "images/projects/bim-inspector.svg",
-    thumbnailAlt: "입체 모델의 층과 점검 지점을 표현한 BIM 그래픽",
-    readmeUrl: "https://github.com/youns1998/revit-bim-portfolio/blob/main/README.md",
-    title: "Revit BIM Inspector",
-    category: "BIM / Development",
-    type: "Revit 모델 정보 점검 도구",
-    duration: "진행 중",
-    context: "개인 개발 프로젝트",
-    description: "실·문·창·시트 정보를 점검하고 CSV 보고서를 만드는 Revit용 도구입니다.",
-    tools: ["Revit API", "C#", ".NET 8", "WPF"],
-    scope: "실·문·창·시트 점검 · 분류 필터 · CSV · JSON",
-    verification: "샘플 검사 13개·CSV 출력·Revit 2026 API 빌드 확인. Revit 내부 실행은 미확인입니다.",
-    visual: {
-      caption: "REVIT / C# · WPF",
-      title: "BIM CHECK",
-      items: ["실·문·창 점검", "시트 구성 확인", "CSV 보고서"]
-    },
-    highlights: [
-      "미배치·면적 0인 실과 중복 번호 점검",
-      "문·창 Mark와 빈 시트 점검",
-      "분류 필터와 CSV·JSON 내보내기"
-    ],
-    url: "https://github.com/youns1998/revit-bim-portfolio",
     documents: []
   },
   {

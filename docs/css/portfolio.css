@@ -131,7 +131,5 @@ h2 { font-size:.8rem; font-weight:500; margin:0 0 24px; color:var(--muted); }
   .pdf-stage { min-height:420px; height:65vh; }
 }
 @media (prefers-reduced-motion:reduce) { html { scroll-behavior:auto; } }
-.visual-section { padding-block:8px 34px; }
-.visual-section > h2 { margin:0 0 22px; }
 .project-entry-copy .project-entry-tools { margin-top:9px; font-size:.69rem; color:var(--muted); }
 .project-entry-arrow { flex-shrink:0; }
