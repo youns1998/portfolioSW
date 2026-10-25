@@ -176,7 +176,7 @@
       article.dataset.project = project.id;
       const anchor = link("", detailUrl(project), "project-entry-link");
       const copy = node("div", "project-entry-copy");
-      const title = node("h3", "", project.title);
+      const title = node("h2", "", project.title);
       title.id = "project-title-" + project.id;
       anchor.setAttribute("aria-labelledby", title.id);
       append(copy, title, node("p", "", presentation.summary || project.caseStudy.label));

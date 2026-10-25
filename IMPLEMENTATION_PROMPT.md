@@ -37,6 +37,7 @@ cases 폴더의 공통 기록 서식, 읽기 전용 Collect-SystemInfo.ps1, 가�
 
 ## 이 사이트를 다음에 수정할 때
 
+이 사이트에는 프로젝트와 작업 설명만 표시합니다. 자기소개·학력·자격·인턴·연락처 등 사람인 이력서에 있는 내용을 다시 넣지 않습니다.
 HTML·CSS·순수 JavaScript 정적 사이트이며 docs가 배포 루트입니다. 새 프레임워크는 필요 없습니다.
 메인은 `portfolioProjects` 중 caseStudy가 있는 공개 항목과 `portfolioSupportProjects`를 표시합니다.
 Spring·GIS는 `portfolioFeaturedProjects`에 있으며 데이터와 기존 상세 주소만 보존합니다. 메인은 제목·한 줄 설명·기술·상세 링크로 된 목록입니다. 필터·예시 그림·배지·미완성 표시·빈 자료 영역은 사용하지 않습니다. 한 줄 설명(summary)과 기술(technologies), 상세 개요와 주요 기능은 portfolioPresentations에서 관리합니다.

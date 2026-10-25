@@ -132,8 +132,8 @@ try {
     foreach ($width in @(1440,1280,900,700,600,390,320)) {
         Set-Viewport $width
         Open-Page 'index.html'
-        Assert-Js "Concise identity and background at $width px" 'document.title.includes("IT Support") && document.querySelector("h1").textContent==="최윤성" && document.querySelector("#about").textContent.includes("플러그미디어웍스") && document.querySelector(".intro-role").textContent.includes("OA")'
-        Assert-Js "Three projects remain accessible at $width px" '[...document.querySelectorAll(".project-entry")].map(c=>c.dataset.project).join(",")==="cad-productivity-palette,it-support-desk,pc-troubleshooting-lab" && [...document.querySelectorAll(".project-entry")].every(c=>c.querySelector("h3").textContent&&c.querySelector("p").textContent)'
+        Assert-Js "Homepage contains projects without resume content at $width px" 'document.querySelector("h1").textContent==="프로젝트" && !document.querySelector(".intro,#about,#contact,.profile-facts,a[href^=\"mailto:\"],a[href*=\"#about\"],a[href*=\"#contact\"]") && !document.querySelector("main").textContent.match(/학력|자격|정보처리기사|소프트웨어학과|인턴|지원자|소프트웨어를 전공/)'
+        Assert-Js "Three projects remain accessible at $width px" '[...document.querySelectorAll(".project-entry")].map(c=>c.dataset.project).join(",")==="cad-productivity-palette,it-support-desk,pc-troubleshooting-lab" && [...document.querySelectorAll(".project-entry")].every(c=>c.querySelector("h2").textContent&&c.querySelector("p").textContent)'
         Assert-Js "Homepage removes ornamental content at $width px" '!document.querySelector(".case-preview,.project-type,.project-filters,.profile-panel,.focus-strip,.approach-list,.skills-overview,.unfinished-note") && !document.querySelector("main img")'
         Assert-Js "Each project has a single working detail link at $width px" '[...document.querySelectorAll(".project-entry")].every(c=>c.querySelectorAll("a").length===1&&new URL(c.querySelector("a").href).searchParams.get("project")===c.dataset.project)'
         Assert-Js "Project external links stay disabled at $width px" '!document.querySelector(".project-entry a[target=\"_blank\"]") && window.portfolioSettings.projectLinks===false'
@@ -145,8 +145,6 @@ try {
     Set-Viewport 1440
     Open-Page 'index.html'
     Assert-Js 'Project navigation reaches the list' 'document.querySelector("nav a[href=\"#work\"]").click();new Promise(r=>setTimeout(()=>r(location.hash==="#work"&&document.querySelector("#work").getBoundingClientRect().top<innerHeight),150))'
-    Assert-Js 'About navigation reaches the background' 'document.querySelector("nav a[href=\"#about\"]").click();new Promise(r=>setTimeout(()=>r(location.hash==="#about"&&document.querySelector("#about").getBoundingClientRect().top<innerHeight),150))'
-    Assert-Js 'Contact navigation works' 'document.querySelector("nav a[href=\"#contact\"]").click();new Promise(r=>setTimeout(()=>r(document.querySelector("nav a[aria-current=location]").hash==="#contact"),150))'
     foreach ($width in @(1440,390,320)) {
         Set-Viewport $width
         foreach ($project in @('cad-productivity-palette','it-support-desk','pc-troubleshooting-lab')) {
